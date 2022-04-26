@@ -232,8 +232,12 @@ public class SSConnection implements Connection {
         return (commitPages == null);
     }
 
+    public String getMostCommonIndexFromWorkload() {
+        return metadata.getMostUsedColumn();
+    }
 
-    public DatabaseMetaData getMetaData() {
+
+    public SSDatabaseMetaData getMetaData() {
         return metadata;
     }
 

@@ -131,7 +131,16 @@ abstract class Command {
 		}
 	}
 
+    final void handleMostCommon(SSConnection con, SSStatement st) {
+        String mostCommon = this.columnExpressions.getMostCommonField();
+        if (mostCommon != null) {
+            System.out.println("Most common field (columnExpressions): " + mostCommon);
+            con.getMetaData();
+        }
+    }
+
     final void execute(SSConnection con, SSStatement st) throws SQLException{
+        con.getMetaData().incrementColumnUsage(this.columnExpressions.getMostCommonField());
     	int savepoint = con.getSavepoint();
         try{
             executeImpl( con, st );

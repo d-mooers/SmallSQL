@@ -139,6 +139,7 @@ final class Database{
 	 */
 	static final void closeConnection(SSConnection con) throws SQLException{
 		synchronized(databases){
+			System.out.println("Most used column this session: " + con.getMostCommonIndexFromWorkload());
 			Iterator iterator = databases.values().iterator();
 			while(iterator.hasNext()){
 				Database database = (Database)iterator.next();

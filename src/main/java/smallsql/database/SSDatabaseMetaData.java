@@ -36,11 +36,16 @@ import smallsql.tools.util;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 final class SSDatabaseMetaData implements DatabaseMetaData {
     final private SSConnection con;
     final private SSStatement st;
+    final private Map<String, Integer> columnUsage;
+    private String mostCommonCol;
+    private int mostCommonCount;
 
 
     /**
@@ -49,6 +54,8 @@ final class SSDatabaseMetaData implements DatabaseMetaData {
     SSDatabaseMetaData(SSConnection con) throws SQLException {
         this.con = con;
         st = new SSStatement(con);
+        this.columnUsage = new HashMap<>();
+        this.mostCommonCol = "";
     }
 
     public boolean allProceduresAreCallable() {
@@ -58,6 +65,21 @@ final class SSDatabaseMetaData implements DatabaseMetaData {
 
     public boolean allTablesAreSelectable() {
         return true;
+    }
+
+    public void incrementColumnUsage(String col) {
+        if (col == null || col.length() == 0) return;
+        this.columnUsage.put(col, this.columnUsage.getOrDefault(col, 0) + 1);
+
+        if (this.columnUsage.getOrDefault(col, 0) > this.mostCommonCount ) {
+            System.out.println("Updated with field: " + col);
+            this.mostCommonCol = col;
+            this.mostCommonCount = this.columnUsage.get(col);
+        }
+    }
+
+    public String getMostUsedColumn() {
+        return this.mostCommonCol;
     }
 
 

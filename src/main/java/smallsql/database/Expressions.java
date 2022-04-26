@@ -32,6 +32,9 @@
  */
 package smallsql.database;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Volker Berlin
  *
@@ -73,6 +76,23 @@ final class Expressions {
 			resize(size << 1);
 		}
 		data[size++] = expr;
+	}
+
+	final String getMostCommonField() {
+		if (this.data == null || this.data.length == 0) return "";
+		Map<String, Integer> counts = new HashMap<>();
+		String mostCommon = this.data[0] != null ? this.data[0].getName() : "";
+		for (Expression expr : this.data) {
+			String name = expr != null ? expr.getName() : null;
+			if (name == null) continue;
+			if (!counts.containsKey(name)) counts.put(name, 0);
+			counts.put(name, counts.get(name) + 1);
+
+			if (counts.get(name) > counts.getOrDefault(mostCommon, 0)) {
+				mostCommon = name;
+			}
+		}
+		return mostCommon;
 	}
 
 	final void add(int idx, Expression expr){
