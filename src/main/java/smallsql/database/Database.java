@@ -283,7 +283,7 @@ final class Database{
      * @param foreignKeys 
      * @throws Exception
      */
-	void createTable(SSConnection con, String name, Columns columns, IndexDescriptions indexes, ForeignKeys foreignKeys) throws Exception{
+	Table createTable(SSConnection con, String name, Columns columns, IndexDescriptions indexes, ForeignKeys foreignKeys) throws Exception{
         checkForeignKeys( con, foreignKeys );
         // createFile() can run only one Thread success (it is atomic)
         // Thats the create of the Table does not need in the Synchronized.
@@ -291,6 +291,7 @@ final class Database{
         synchronized(tableViews){
             tableViews.put( name, table);
         }
+		return table;
     }
 
 
