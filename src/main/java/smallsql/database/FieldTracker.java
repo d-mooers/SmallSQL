@@ -1,8 +1,5 @@
 package smallsql.database;
 import java.util.*;
-
-import javax.swing.text.TabExpander;
-
 import java.sql.*;
 
 
