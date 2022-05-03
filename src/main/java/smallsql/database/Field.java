@@ -8,6 +8,11 @@ public class Field {
     private int insertionsFromThisSession;
     private int joinsFromThisSession;
 
+    public Field(String tableName, String fieldName) {
+        this.tableName = tableName;
+        this.fieldName = fieldName;
+    }
+
     public static String formatKey(String tableName, String fieldName) {
         StringBuilder builder = new StringBuilder();
         builder.append(tableName.toLowerCase());
@@ -22,8 +27,8 @@ public class Field {
     }
 
     // operationID will be changed to an enum
-    public void incrementCounter(int operationID) throws Error {
-        switch (operationID) {
+    public void incrementCounter(int operationType) throws Error {
+        switch (operationType) {
             case 0:
                 this.selectionsFromThisSession++;
                 break;
@@ -37,7 +42,7 @@ public class Field {
                 this.joinsFromThisSession++;
                 break;
             default:
-                throw new Error("Unrecognized operationID: " + operationID);
+                throw new Error("Unrecognized operationType: " + operationType);
         }
     }
 
