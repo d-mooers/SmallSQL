@@ -108,7 +108,16 @@ public class CommandInsert extends Command {
 					throw SmallSQLException.create(Language.COL_VAL_UNMATCH);
         }
     }
-    
+
+    /**
+     * Gets the tablename, columnname pairs for inserts. This is interesting
+     * for inserts because they generally apply to all columns in a table. For this
+     * reason, we will represent the insert with the table name, but null as the
+     * column name
+     */
+    public void postCompileGetColumns(){
+        fieldsUsed.add(new TrackerRecord(5, table.getName(), null));
+    }
 
 
     void executeImpl(SSConnection con, SSStatement st) throws Exception {

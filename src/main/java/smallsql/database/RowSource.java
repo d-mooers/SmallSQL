@@ -33,6 +33,8 @@
 package smallsql.database;
 
 import java.sql.*;
+import java.util.ArrayList;
+
 import smallsql.tools.language.Language;
 
 /**
@@ -88,6 +90,14 @@ abstract class RowSource {
 	 * @return
 	 */
     abstract boolean first() throws Exception;
+
+	/**
+	 * Returns the columns in a RowSource. This method
+	 * is mainly used by the join class
+	 */
+	public ArrayList<String[]> getColumns(){
+		return new ArrayList<String[]>(0);
+	}
 
 	boolean previous() throws Exception{
 		throw SmallSQLException.create(Language.RSET_FWDONLY);
@@ -184,6 +194,9 @@ abstract class RowSource {
     void setAlias(String name) throws SQLException{
         throw SmallSQLException.create(Language.ALIAS_UNSUPPORTED);
     }
+
+    public String getAlias() {return null;}
+    public String getName() {return null;}
     
     /**
      * Perform some operation on some RowSources per ResultSet. For example the grouping

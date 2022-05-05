@@ -43,7 +43,6 @@ class CommandDelete extends CommandSelect {
 	CommandDelete(Logger log){
 		super(log);
 	}
-	
 
 	void executeImpl(SSConnection con, SSStatement st) throws Exception {
 		compile(con);

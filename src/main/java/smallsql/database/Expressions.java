@@ -32,6 +32,7 @@
  */
 package smallsql.database;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -111,7 +112,42 @@ final class Expressions {
 		System.arraycopy( cols.data, 0, data, size, count);
 		size += count;
 	}
-	
+
+	/**
+	 * For debugging
+	 */
+	public void printColumns(){
+		if (data == null){
+			return;
+		}
+		for (Expression ex: data){
+			if (ex == null){
+				continue;
+			}
+			ex.printColumns();
+		}
+	}
+
+	/**
+     * Returns an arraylist of TableName, columnName pairs used by all of the
+	 * subexpressions for this expressions object
+	 *
+	 * If alias is true, return the alias. Otherwise, return the table name
+	 */
+	public ArrayList<String[]> getColumns(boolean alias){
+	    ArrayList<String[]> columnPairs  = new ArrayList<>(8);
+		if (data == null){
+			return columnPairs;
+		}
+		for (Expression ex: data){
+			if (ex == null){
+				continue;
+			}
+			ex.getColumnsHelper(columnPairs, alias);
+		}
+		return columnPairs;
+	}
+
 	final void clear(){
 		size = 0;
 	}

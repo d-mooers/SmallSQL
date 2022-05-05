@@ -74,7 +74,9 @@ abstract class DataSource extends RowSource{
 
 
 	boolean init( SSConnection con ) throws Exception{return false;}
-	String getAlias(){return null;}
+	public String getAlias(){return null;}
+
+	public String getName(){return null;}
 	
 	abstract TableView getTableView();
 	

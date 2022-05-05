@@ -33,6 +33,9 @@
 package smallsql.database;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 final class Join extends RowSource{
 
     Expression condition; // the join condition, the part after the ON
@@ -60,6 +63,24 @@ final class Join extends RowSource{
 	final boolean isScrollable(){
 		return false; //TODO performance, if left and right are scrollable then this should also scrollable
 	}
+
+    /**
+     * Gets the columns from the join condition and
+     * returns an arraylist of containing columns in the join condition
+     * and their corresponding table names
+     **/
+    public ArrayList<String[]> getColumns(){
+        // Hashmap for alias to table name
+        HashMap<String, String> aliasMap = new HashMap<>();
+        ArrayList<String[]> conditionFields = condition.getColumns(true);
+        aliasMap.put(left.getAlias(), left.getName());
+        aliasMap.put(right.getAlias(), right.getName());
+        for (int i = 0; i < conditionFields.size(); i++){
+            String[] curElement = conditionFields.get(i);
+            curElement[0] = aliasMap.get(curElement[0]);
+        }
+        return conditionFields;
+    }
 
     
     void beforeFirst() throws Exception{
