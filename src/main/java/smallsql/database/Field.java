@@ -70,4 +70,12 @@ public class Field {
     public int getJoins() {
         return this.joins;
     }
+
+    public String getFieldName() {
+        return this.fieldName;
+    }
+
+    public String getTableName() {
+        return this.tableName;
+    }
 }
