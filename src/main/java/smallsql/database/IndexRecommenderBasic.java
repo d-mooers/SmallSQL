@@ -4,19 +4,19 @@ import java.util.ArrayList;
 
 public class IndexRecommenderBasic extends IndexRecommender {
     
-    IndexRecommenderBasic(Table table, ArrayList<Field> fields) {
-        super(table, fields);
+    IndexRecommenderBasic(SSConnection con, ArrayList<Field> fields) {
+        super(con, fields);
     }
 
-    IndexRecommenderBasic(Table table) {
-        super(table);
+    IndexRecommenderBasic(SSConnection con) {
+        super(con);
     }
 
     public ArrayList<String> recommendIndex() {
         for (Field field : this.fields) {
             if ((field.getJoins() + field.getSelections()) - (field.getDeletions() + field.getInsertions()) > 0
                     && !this.recommendedIndexes.contains(field.getFieldName())
-                    && !this.containsIndex(field.getFieldName())) {
+                    && !this.containsIndex(field)) {
                 this.recommendedIndexes.add(field.getFieldName());
             }
         }

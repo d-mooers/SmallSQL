@@ -74,4 +74,8 @@ public class Field {
     public String getFieldName() {
         return this.fieldName;
     }
+
+    public String getTableName() {
+        return this.tableName;
+    }
 }
