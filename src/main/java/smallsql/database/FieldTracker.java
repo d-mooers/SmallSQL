@@ -29,7 +29,7 @@ public class FieldTracker {
         }
     }
 
-    public void incrementCounter(int operationType, Table table, String fieldName) {
+    public void incrementCounter(AccessType operationType, Table table, String fieldName) {
         this.incrementCounter(operationType, table.name, fieldName);
     }
 
@@ -72,7 +72,7 @@ public class FieldTracker {
         }
     }
 
-    public void incrementCounter(int operationType, String tableName, String fieldName) {
+    public void incrementCounter(AccessType operationType, String tableName, String fieldName) {
         Field field;
         if (!this.fieldTracker.containsKey(Field.formatKey(tableName, fieldName))) {
             field = new Field(tableName, fieldName);

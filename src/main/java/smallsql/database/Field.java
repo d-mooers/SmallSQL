@@ -35,20 +35,41 @@ public class Field {
         return Field.formatKey(tableName, fieldName);
     }
 
+    /**
+    SELECT,
+    WHERE,
+    INSERTION,
+    DELETION,
+    JOIN,
+    UPDATE,
+    GROUPBY,
+    HAVING,
+    ORDERBY,
+    NULL
+
+     */
+
     // operationID will be changed to an enum
-    public void incrementCounter(int operationType) throws Error {
+    public void incrementCounter(AccessType operationType) throws Error {
         switch (operationType) {
-            case 0:
+            case SELECT:
+            case WHERE:
+            case ORDERBY:
+            case GROUPBY:
                 this.selections++;
                 break;
-            case 1: 
+            case DELETION:
                 this.deletions++;
                 break;
-            case 2:
+            case INSERTION:
                 this.insertions++;
                 break;
-            case 3:
+            case JOIN:
+            case HAVING:
                 this.joins++;
+                break;
+            case UPDATE:
+            case NULL:
                 break;
             default:
                 throw new Error("Unrecognized operationType: " + operationType);
