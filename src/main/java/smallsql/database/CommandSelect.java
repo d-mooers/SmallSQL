@@ -33,6 +33,9 @@
 package smallsql.database;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import smallsql.tools.language.Language;
 
 class CommandSelect extends Command{
@@ -264,20 +267,56 @@ class CommandSelect extends Command{
         }
         return position;
     }
+
+	/**
+	 * Get the columns before statements are compiled
+     * or else the join just gets turned into a new table
+	 */
+	public void preCompileGetColumns(){
+		if (from != null){
+			from.getColumns();
+			ArrayList<String[]> fromPairs = from.getColumns();
+			addFields(AccessType.JOIN.ordinal(), fromPairs);
+		}
+	}
+
+	/**
+	 * Gets all columns and the context in which they were used and adds
+	 * them to the Command class's fieldsUsed arraylist. This method is
+	 * to be called after the statment is compiled
+	 */
+	public void postCompileGetColumns(){
+    	if (where != null){
+    		ArrayList<String[]> wherePairs = where.getColumns(false);
+    		addFields(AccessType.WHERE.ordinal(), wherePairs);
+		}
+    	if (groupBy != null){
+			ArrayList<String[]> groupByPairs = groupBy.getColumns(false);
+			addFields(AccessType.GROUPBY.ordinal(), groupByPairs);
+		}
+		if (having != null){
+			ArrayList<String[]> havingPairs = having.getColumns(false);
+			addFields(AccessType.HAVING.ordinal(), havingPairs);
+		}
+		if (orderBy != null){
+			ArrayList<String[]> orderByPairs = orderBy.getColumns(false);
+			addFields(AccessType.ORDERBY.ordinal(), orderByPairs);
+		}
+	}
     
 
     /**
      * The main method to execute this Command and create a ResultSet.
      */
     void executeImpl(SSConnection con, SSStatement st) throws Exception{
-        compile(con);
+		compile(con);
         if((st.rsType == ResultSet.TYPE_SCROLL_INSENSITIVE || st.rsType == ResultSet.TYPE_SCROLL_SENSITIVE) &&
         	!from.isScrollable()){
         	from = new Scrollable(from);
         }
         from.execute();
         rs =  new SSResultSet( st, this );
-    }
+	}
     
     
     /**

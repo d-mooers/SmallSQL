@@ -68,9 +68,9 @@ abstract class TableViewResult extends DataSource {
 	}
 	
 
-	String getAlias(){
-		return (alias != null) ? alias : getTableView().name;
-	}
+	public String getAlias(){ return (alias != null) ? alias : getTableView().name;}
+
+	public String getName() {return getTableView().name;}
 	
 
 	boolean hasAlias(){

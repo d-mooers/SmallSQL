@@ -33,6 +33,8 @@
 package smallsql.database;
 
 
+import java.util.ArrayList;
+
 /**
  * @author Volker Berlin
  *
@@ -80,6 +82,19 @@ class CommandUpdate extends CommandSelect {
 		}
 		return false;		
 	}*/
+
+
+	/**
+	 * Updates the columns for the update command. First
+	 * calles the update columns from the select command to
+	 * cover where statements, and then finds the columns
+	 * in the set statement
+	 */
+	public void postCompileGetColumns(){
+		super.postCompileGetColumns();
+		ArrayList<String[]> setPairs = columnExpressions.getColumns(false);
+		addFields(AccessType.UPDATE.ordinal(), setPairs);
+	}
 	
 	
 	void executeImpl(SSConnection con, SSStatement st) throws Exception {
@@ -99,7 +114,7 @@ class CommandUpdate extends CommandSelect {
 		    TableResult tableResult = (TableResult)ds;
 		    tableResult.lock = SQLTokenizer.UPDATE;
 		}
-		
+
 		while(true){
 			// the reading and writing of a row must be atomic
             synchronized(con.getMonitor()){
@@ -110,5 +125,6 @@ class CommandUpdate extends CommandSelect {
             }
 			updateCount++;
 		}
+
 	}
 }

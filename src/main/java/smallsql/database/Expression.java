@@ -32,7 +32,9 @@
  */
 package smallsql.database;
 
+import javax.sound.midi.Track;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 
 abstract class Expression implements Cloneable{
@@ -198,6 +200,61 @@ abstract class Expression implements Cloneable{
 		}
 	}
 
+
+	/**
+	 * Helper functions for getting Columns in an expression
+     * that simply adds the Table, column pairs to the arraylist
+	 * that is passed to it as an argument.
+	 *
+	 * If alias is true, return the alias. Otherwise return the table name
+	 */
+	public void getColumnsHelper(ArrayList<String[]> columnPairs, boolean alias){
+		if (this instanceof ExpressionName) {
+			ExpressionName asName = (ExpressionName)this;
+			String[] newPair = new String[2];
+			if (alias) newPair[0] = asName.getTableAlias();
+			else newPair[0] = asName.getTableName();
+			newPair[1] = asName.getAlias();
+		    columnPairs.add(newPair);
+			return;
+		}
+		if (params == null){
+			return;
+		}
+		for (Expression p: params){
+		    p.getColumnsHelper(columnPairs, alias);
+		}
+	}
+
+	/**
+	 * Return an ArrayList of Table name and field name pairs
+	 *
+	 * If alias is true, return the alias, otherwise return the table
+	 * name
+ 	 */
+	public ArrayList<String[]> getColumns(boolean alias){
+	    ArrayList<String[]> namePairs = new ArrayList<>(8);
+	    getColumnsHelper(namePairs, alias);
+	    return namePairs;
+	}
+
+	/**
+	 * Prints the columns for debugging
+	 */
+	public void printColumns(){
+	    if (this instanceof ExpressionName){
+	    	ExpressionName asName = (ExpressionName)this;
+			System.out.println("Table: " + asName.getTableName());
+			System.out.println("Column: " + asName.getAlias());
+			return;
+		}
+		if (params == null){
+			return;
+		}
+		for (Expression p: params){
+		    p.printColumns();
+		}
+	}
 
 	int getDisplaySize(){
 		return SSResultSetMetaData.getDisplaySize(getDataType(), getPrecision(), getScale());

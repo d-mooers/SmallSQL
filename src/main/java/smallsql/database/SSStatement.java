@@ -97,6 +97,7 @@ class SSStatement implements Statement {
 
 
     final public boolean execute(String sql) throws SQLException {
+        //System.out.println(sql);
         executeImpl(sql);
         return cmd.getResultSet() != null;
     }
@@ -109,9 +110,12 @@ class SSStatement implements Statement {
             con.log.println(sql);
             SQLParser parser = new SQLParser();
             cmd = parser.parse(con, sql);
+            cmd.preCompileGetColumns();
             if (maxRows != 0 && (cmd.getMaxRows() == -1 || cmd.getMaxRows() > maxRows))
                 cmd.setMaxRows(maxRows);
             cmd.execute(con, this);
+            cmd.postCompileGetColumns();
+            //cmd.printFieldsUsed();
         } catch (Exception e) {
             throw SmallSQLException.createFromException(e);
         }

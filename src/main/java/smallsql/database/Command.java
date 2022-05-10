@@ -33,8 +33,11 @@
 package smallsql.database;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 import smallsql.tools.language.Language;
+
+import static java.lang.String.format;
 
 
 abstract class Command {
@@ -50,7 +53,10 @@ abstract class Command {
     final Expressions columnExpressions; 
 
 	/**	List of ExpressionValue */
-    Expressions params  = new Expressions(); 
+    Expressions params  = new Expressions();
+
+    /** List of Fields Used **/
+    ArrayList<TrackerRecord> fieldsUsed = new ArrayList<>(32);
 
     final Logger log;
     
@@ -64,6 +70,20 @@ abstract class Command {
 		this.columnExpressions = columnExpressions;
 	}
 
+
+    /**
+     * Adds the field pairs under the columnPairs arraylist to the fieldsUsed
+     * instance variable under the given operation type.
+     * @param operationType: Operation type as defined by the operation type enum
+     * @param columnPairs: Arraylist of Tablename, columnname pairs
+     */
+	protected void addFields(int operationType, ArrayList<String[]> columnPairs){
+	    for (int i = 0; i < columnPairs.size(); i++){
+	        String[] columnPair = columnPairs.get(i);
+	        fieldsUsed.add(new TrackerRecord(operationType, columnPair[0], columnPair[1]));
+        }
+    }
+
     
     /**
      * Add a Expression that returns the value for Column. This method is used
@@ -74,6 +94,7 @@ abstract class Command {
     void addColumnExpression( Expression column ) throws SQLException{
         columnExpressions.add( column );
     }
+
 
     void addParameter( ExpressionValue param ){
         params.add( param );
@@ -139,8 +160,24 @@ abstract class Command {
         }
     }
 
+
+    public void preCompileGetColumns(){}
+
+    public void postCompileGetColumns(){}
+
+
+    /**
+     * Prints fields used for debugging
+     */
+    public void printFieldsUsed(){
+        for (TrackerRecord tr: fieldsUsed){
+             String sf = format("Operation: %d; Table: %s; Field: %s", tr.getOperationType(), tr.getTableName(), tr.getFieldName());
+             System.out.println(sf);
+        }
+    }
+
     final void execute(SSConnection con, SSStatement st) throws SQLException{
-        con.getMetaData().incrementColumnUsage(this.columnExpressions.getMostCommonField());
+        //con.getMetaData().incrementColumnUsage(this.columnExpressions.getMostCommonField());
     	int savepoint = con.getSavepoint();
         try{
             executeImpl( con, st );
