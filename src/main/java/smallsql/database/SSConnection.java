@@ -46,6 +46,7 @@ import java.util.concurrent.Executor;
 public class SSConnection implements Connection {
 
     private final boolean readonly;
+    private final FieldTracker fieldTracker;
     private Database database;
     private boolean autoCommit = true;
     int isolationLevel = TRANSACTION_READ_COMMITTED; // see also getDefaultTransactionIsolation
@@ -66,6 +67,7 @@ public class SSConnection implements Connection {
         boolean create = "true".equals(props.getProperty("create"));
         database = Database.getDatabase(name, this, create);
         metadata = new SSDatabaseMetaData(this);
+        this.fieldTracker = new FieldTracker(this, database);
     }
 
     /**
@@ -78,6 +80,11 @@ public class SSConnection implements Connection {
         database = con.database;
         metadata = con.metadata;
         log = con.log;
+        this.fieldTracker = new FieldTracker(con, con.database);
+    }
+
+    public FieldTracker getFieldTracker() {
+        return this.fieldTracker;
     }
 
     /**
@@ -213,6 +220,7 @@ public class SSConnection implements Connection {
 
 
     public void close() throws SQLException {
+        fieldTracker.save();
         rollback();
         database = null;
         commitPages = null;
