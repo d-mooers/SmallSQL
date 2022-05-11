@@ -165,6 +165,12 @@ abstract class Command {
 
     public void postCompileGetColumns(){}
 
+    public void finalizeColumns(FieldTracker ft){
+	    for (TrackerRecord tr : fieldsUsed){
+	        ft.incrementCounter(tr.getOperationType(), tr.getTableName(), tr.getFieldName());
+        }
+    }
+
 
     /**
      * Prints fields used for debugging

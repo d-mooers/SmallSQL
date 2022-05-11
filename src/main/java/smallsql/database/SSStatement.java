@@ -115,6 +115,7 @@ class SSStatement implements Statement {
                 cmd.setMaxRows(maxRows);
             cmd.execute(con, this);
             cmd.postCompileGetColumns();
+            cmd.finalizeColumns(con.getFieldTracker());
             //cmd.printFieldsUsed();
         } catch (Exception e) {
             throw SmallSQLException.createFromException(e);
