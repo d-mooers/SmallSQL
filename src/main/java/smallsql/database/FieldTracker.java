@@ -11,6 +11,12 @@ public class FieldTracker {
     private Table table;
     private SSConnection con;
     private Database db;
+    private final int    TABLE_NAME_IDX = 0;
+    private final int    FIELD_NAME_IDX = 1; 
+    private final int    SELECTIONS_IDX = 2;
+    private final int    DELETIONS_IDX = 3; 
+    private final int    INSERTIONS_IDX = 4;
+    private final int    JOINS_IDX = 5;
 
     public FieldTracker(SSConnection con, Database db) {
         this.con = con;
@@ -18,10 +24,52 @@ public class FieldTracker {
         this.fieldTracker = new HashMap<>();
         this.con = con;
         this.db = db;
+        if (this.loadOrCreateTable()) {
+            this.loadFieldsFromTable();
+        }
     }
 
     public void incrementCounter(int operationType, Table table, String fieldName) {
         this.incrementCounter(operationType, table.name, fieldName);
+    }
+
+    private void loadFieldsFromTable() {
+        TableResult from = new TableResult(this.table);
+        try {
+             while (from.next()) {
+                String tableName = from.getString(TABLE_NAME_IDX);
+                String fieldName = from.getString(FIELD_NAME_IDX);
+                int selections = from.getInt(SELECTIONS_IDX);
+                int deletions = from.getInt(DELETIONS_IDX);
+                int insertions = from.getInt(INSERTIONS_IDX);
+                int joins = from.getInt(JOINS_IDX);
+                Field field = new Field(tableName, fieldName, selections, deletions, insertions, joins);
+                this.fieldTracker.put(field.toString(), field);
+                from.deleteRow();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    private void saveToTable() {
+        TableResult to = new TableResult(table);
+        Set<String> keys = this.fieldTracker.keySet();
+        for (String key : keys) {
+            Expression[] updateValues = new ExpressionValue[JOINS_IDX + 1];
+            Field field = this.fieldTracker.get(key);
+            updateValues[TABLE_NAME_IDX] = new ExpressionValue(field.getTableName(), SQLTokenizer.NVARCHAR);
+            updateValues[FIELD_NAME_IDX] = new ExpressionValue(field.getFieldName(), SQLTokenizer.NVARCHAR);
+            updateValues[INSERTIONS_IDX] = new ExpressionValue(field.getInsertions(), SQLTokenizer.INT);
+            updateValues[DELETIONS_IDX] = new ExpressionValue(field.getDeletions(), SQLTokenizer.INT);
+            updateValues[JOINS_IDX] = new ExpressionValue(field.getJoins(), SQLTokenizer.INT);
+            updateValues[SELECTIONS_IDX] = new ExpressionValue(field.getSelections(), SQLTokenizer.INT);
+            try {
+                to.insertRow(updateValues);
+            } catch (Exception e) {
+                System.out.println("Dang it failed!");
+            }
+        }
     }
 
     public void incrementCounter(int operationType, String tableName, String fieldName) {
@@ -35,13 +83,14 @@ public class FieldTracker {
         field.incrementCounter(operationType);
     }
 
-    public void loadOrCreateTable() {
+    public boolean loadOrCreateTable() {
         try {
             TableView tv =  TableView.load(con, db, this.TABLE_NAME);
             if (tv instanceof Table) this.table = (Table) tv;
             else {
                 throw new Error("Expected table, got view for field tracker");
             }
+            return true;
         } catch (SQLException e) {
             System.out.println("Fieldtracker table does not exist yet");
             Columns columns = new Columns();
@@ -80,12 +129,12 @@ public class FieldTracker {
             } catch (Exception error) {
                 System.out.println("Uhoh, failed");
             }
+            return false;
         }
     }
 
     public boolean save() {
-        this.loadOrCreateTable();
-        // TO DO: Save table
+        this.saveToTable();
         return true;
     }
 }

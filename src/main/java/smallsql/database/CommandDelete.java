@@ -33,6 +33,8 @@
 package smallsql.database;
 
 
+import java.util.ArrayList;
+
 /**
  * @author Volker Berlin
  *
@@ -42,6 +44,23 @@ class CommandDelete extends CommandSelect {
 
 	CommandDelete(Logger log){
 		super(log);
+	}
+
+	/**
+	 * Gets the Table from which to Delete
+	 */
+	public void preCompileGetColumns(){
+		fieldsUsed.add(new TrackerRecord(AccessType.DELETION.ordinal(), from.getName(), null));
+	}
+
+	/**
+	 * Updates the columns for the update command. First
+	 * calles the update columns from the select command to
+	 * cover where statements, and then finds the columns
+	 * in the set statement
+	 */
+	public void postCompileGetColumns(){
+		super.postCompileGetColumns();
 	}
 
 	void executeImpl(SSConnection con, SSStatement st) throws Exception {

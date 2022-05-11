@@ -71,6 +71,7 @@ public class Field {
         return this.joins;
     }
 
+<<<<<<< HEAD
     public String getFieldName() {
         return this.fieldName;
     }
@@ -78,4 +79,13 @@ public class Field {
     public String getTableName() {
         return this.tableName;
     }
+=======
+    public String getTableName() {
+        return this.tableName;
+    }
+
+    public String getFieldName() {
+        return this.fieldName;
+    }
+>>>>>>> 489db3b16f8488f77fe65eb9eda175b37a697b0c
 }
