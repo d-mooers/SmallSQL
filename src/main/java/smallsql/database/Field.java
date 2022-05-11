@@ -1,4 +1,4 @@
-ypackage smallsql.database;
+package smallsql.database;
 
 public class Field {
     private String tableName;
