@@ -53,7 +53,14 @@ public class FieldTracker {
     }
 
     private void saveToTable() {
+        System.out.println("Con: " + this.con);
         TableResult to = new TableResult(table);
+        try {
+            to.init(this.con);
+        } catch (Exception e) {
+            System.out.println(e);
+            return;
+        }
         Set<String> keys = this.fieldTracker.keySet();
         for (String key : keys) {
             Expression[] updateValues = new ExpressionValue[JOINS_IDX + 1];
@@ -68,6 +75,7 @@ public class FieldTracker {
                 to.insertRow(updateValues);
             } catch (Exception e) {
                 System.out.println("Dang it failed!");
+                System.out.println(e);
             }
         }
     }
