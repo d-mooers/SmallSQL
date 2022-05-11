@@ -116,7 +116,7 @@ public class CommandInsert extends Command {
      * column name
      */
     public void postCompileGetColumns(){
-        fieldsUsed.add(new TrackerRecord(AccessType.INSERTION.ordinal(), table.getName(), null));
+        fieldsUsed.add(new TrackerRecord(AccessType.INSERTION, table.getName(), null));
     }
 
 

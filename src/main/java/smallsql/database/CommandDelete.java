@@ -50,7 +50,7 @@ class CommandDelete extends CommandSelect {
 	 * Gets the Table from which to Delete
 	 */
 	public void preCompileGetColumns(){
-		fieldsUsed.add(new TrackerRecord(AccessType.DELETION.ordinal(), from.getName(), null));
+		fieldsUsed.add(new TrackerRecord(AccessType.DELETION, from.getName(), null));
 	}
 
 	/**
