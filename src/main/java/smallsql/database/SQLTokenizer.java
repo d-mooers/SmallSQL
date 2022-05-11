@@ -463,6 +463,7 @@ public class SQLTokenizer {
 	static final int ELSE 		= 266;
 	static final int END 		= 267;
 	static final int SWITCH 	= 268;
+    static final int REC_INDEX  = 269;
 	
 	static final String DESC_STR   = "DESC";
     static{
@@ -534,6 +535,7 @@ public class SQLTokenizer {
 		addKeyWord( "ELSE",   		ELSE);
 		addKeyWord( "END",   		END);
 		addKeyWord( "SWITCH", 		SWITCH);
+        addKeyWord( "REC_INDEX",   REC_INDEX);
     }
 
 

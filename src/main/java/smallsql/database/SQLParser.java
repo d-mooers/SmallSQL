@@ -87,6 +87,8 @@ final class SQLParser {
                     return execute();
             case SQLTokenizer.TRUNCATE:
             		return truncate();
+            case SQLTokenizer.REC_INDEX:
+                    return recIndex();
             default:
                     throw new Error();
         }
@@ -334,6 +336,9 @@ final class SQLParser {
         throw createSyntaxError( token, validValues);
     }
     
+    private CommandRecommendIndex recIndex() throws SQLException {
+        return new CommandRecommendIndex(con.log);
+    }
 
     /**
      * A single SELECT of a UNION or only a simple single SELECT.
@@ -980,6 +985,7 @@ Switch: while(true)
                 throw new Error();
         }
     }
+
 
     private CommandSet setTransaction() throws SQLException{
         SQLToken token = nextToken( MISSING_ISOLATION );
@@ -1951,7 +1957,7 @@ Switch: while(true)
     }
 
 
-    private static final int[] COMMANDS = {SQLTokenizer.SELECT, SQLTokenizer.DELETE, SQLTokenizer.INSERT, SQLTokenizer.UPDATE, SQLTokenizer.CREATE, SQLTokenizer.DROP, SQLTokenizer.ALTER, SQLTokenizer.SET, SQLTokenizer.USE, SQLTokenizer.EXECUTE, SQLTokenizer.TRUNCATE};
+    private static final int[] COMMANDS = {SQLTokenizer.SELECT, SQLTokenizer.DELETE, SQLTokenizer.INSERT, SQLTokenizer.UPDATE, SQLTokenizer.CREATE, SQLTokenizer.DROP, SQLTokenizer.ALTER, SQLTokenizer.SET, SQLTokenizer.USE, SQLTokenizer.EXECUTE, SQLTokenizer.TRUNCATE, SQLTokenizer.REC_INDEX};
     private static final int[] COMMANDS_ESCAPE = {SQLTokenizer.D, SQLTokenizer.T, SQLTokenizer.TS, SQLTokenizer.FN, SQLTokenizer.CALL};
     private static final int[] COMMANDS_ALTER = {SQLTokenizer.DATABASE, SQLTokenizer.TABLE, SQLTokenizer.VIEW,  SQLTokenizer.PROCEDURE, };
     private static final int[] COMMANDS_CREATE = {SQLTokenizer.DATABASE, SQLTokenizer.TABLE, SQLTokenizer.VIEW, SQLTokenizer.INDEX, SQLTokenizer.PROCEDURE, SQLTokenizer.UNIQUE, SQLTokenizer.CLUSTERED, SQLTokenizer.NONCLUSTERED};
