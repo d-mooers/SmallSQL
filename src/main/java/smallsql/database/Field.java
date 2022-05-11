@@ -26,7 +26,9 @@ public class Field {
         StringBuilder builder = new StringBuilder();
         builder.append(tableName.toLowerCase());
         builder.append('.');
-        builder.append(fieldName.toLowerCase());
+        if (fieldName != null) {
+            builder.append(fieldName.toLowerCase());
+        }
         return builder.toString();
     }
 
