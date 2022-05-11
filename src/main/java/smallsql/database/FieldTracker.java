@@ -73,6 +73,7 @@ public class FieldTracker {
     }
 
     public void incrementCounter(AccessType operationType, String tableName, String fieldName) {
+        System.out.println("Hi ");
         Field field;
         if (!this.fieldTracker.containsKey(Field.formatKey(tableName, fieldName))) {
             field = new Field(tableName, fieldName);
@@ -81,6 +82,7 @@ public class FieldTracker {
             field = this.fieldTracker.get(Field.formatKey(tableName, fieldName));
         }
         field.incrementCounter(operationType);
+        System.out.println(field.outputResult());
     }
 
     public boolean loadOrCreateTable() {
@@ -134,6 +136,7 @@ public class FieldTracker {
     }
 
     public boolean save() {
+        System.out.println("Saving");
         this.saveToTable();
         return true;
     }

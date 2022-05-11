@@ -57,7 +57,14 @@ Delete Statement
 DELETE FROM Employee WHERE name = 'tom'; 
 
 /**
+Select all tracked fields
+**/
+SELECT * from field_____counts;
+
+/**
 Cleanup
 **/
 DROP TABLE Employee;
 DROP TABLE Dept;
+
+q

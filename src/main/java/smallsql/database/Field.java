@@ -35,19 +35,10 @@ public class Field {
         return Field.formatKey(tableName, fieldName);
     }
 
-    /**
-    SELECT,
-    WHERE,
-    INSERTION,
-    DELETION,
-    JOIN,
-    UPDATE,
-    GROUPBY,
-    HAVING,
-    ORDERBY,
-    NULL
+    public String outputResult() {
+        return this.toString() + " Selections: " + this.selections + " Deletions: " + this.deletions + " Insertions: " + this.insertions + " Joins: " + this.joins;
+    }
 
-     */
 
     // operationID will be changed to an enum
     public void incrementCounter(AccessType operationType) throws Error {
