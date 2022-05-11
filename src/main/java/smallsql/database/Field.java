@@ -1,4 +1,4 @@
-package smallsql.database;
+ypackage smallsql.database;
 
 public class Field {
     private String tableName;
@@ -71,15 +71,6 @@ public class Field {
         return this.joins;
     }
 
-<<<<<<< HEAD
-    public String getFieldName() {
-        return this.fieldName;
-    }
-
-    public String getTableName() {
-        return this.tableName;
-    }
-=======
     public String getTableName() {
         return this.tableName;
     }
@@ -87,5 +78,4 @@ public class Field {
     public String getFieldName() {
         return this.fieldName;
     }
->>>>>>> 489db3b16f8488f77fe65eb9eda175b37a697b0c
 }
