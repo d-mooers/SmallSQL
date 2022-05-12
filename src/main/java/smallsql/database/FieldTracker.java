@@ -29,7 +29,7 @@ public class FieldTracker {
         }
     }
 
-    public void incrementCounter(int operationType, Table table, String fieldName) {
+    public void incrementCounter(AccessType operationType, Table table, String fieldName) {
         this.incrementCounter(operationType, table.name, fieldName);
     }
 
@@ -53,7 +53,14 @@ public class FieldTracker {
     }
 
     private void saveToTable() {
+        System.out.println("Con: " + this.con);
         TableResult to = new TableResult(table);
+        try {
+            to.init(this.con);
+        } catch (Exception e) {
+            System.out.println(e);
+            return;
+        }
         Set<String> keys = this.fieldTracker.keySet();
         for (String key : keys) {
             Expression[] updateValues = new ExpressionValue[JOINS_IDX + 1];
@@ -68,11 +75,13 @@ public class FieldTracker {
                 to.insertRow(updateValues);
             } catch (Exception e) {
                 System.out.println("Dang it failed!");
+                System.out.println(e);
             }
         }
     }
 
-    public void incrementCounter(int operationType, String tableName, String fieldName) {
+    public void incrementCounter(AccessType operationType, String tableName, String fieldName) {
+        System.out.println("Hi ");
         Field field;
         if (!this.fieldTracker.containsKey(Field.formatKey(tableName, fieldName))) {
             field = new Field(tableName, fieldName);
@@ -81,6 +90,7 @@ public class FieldTracker {
             field = this.fieldTracker.get(Field.formatKey(tableName, fieldName));
         }
         field.incrementCounter(operationType);
+        System.out.println(field.outputResult());
     }
 
     public boolean loadOrCreateTable() {
@@ -134,6 +144,7 @@ public class FieldTracker {
     }
 
     public boolean save() {
+        System.out.println("Saving");
         this.saveToTable();
         return true;
     }

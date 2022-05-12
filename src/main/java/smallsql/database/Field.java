@@ -26,7 +26,9 @@ public class Field {
         StringBuilder builder = new StringBuilder();
         builder.append(tableName.toLowerCase());
         builder.append('.');
-        builder.append(fieldName.toLowerCase());
+        if (fieldName != null) {
+            builder.append(fieldName.toLowerCase());
+        }
         return builder.toString();
     }
 
@@ -35,20 +37,32 @@ public class Field {
         return Field.formatKey(tableName, fieldName);
     }
 
+    public String outputResult() {
+        return this.toString() + " Selections: " + this.selections + " Deletions: " + this.deletions + " Insertions: " + this.insertions + " Joins: " + this.joins;
+    }
+
+
     // operationID will be changed to an enum
-    public void incrementCounter(int operationType) throws Error {
+    public void incrementCounter(AccessType operationType) throws Error {
         switch (operationType) {
-            case 0:
+            case SELECT:
+            case WHERE:
+            case ORDERBY:
+            case GROUPBY:
                 this.selections++;
                 break;
-            case 1: 
+            case DELETION:
                 this.deletions++;
                 break;
-            case 2:
+            case INSERTION:
                 this.insertions++;
                 break;
-            case 3:
+            case JOIN:
+            case HAVING:
                 this.joins++;
+                break;
+            case UPDATE:
+            case NULL:
                 break;
             default:
                 throw new Error("Unrecognized operationType: " + operationType);

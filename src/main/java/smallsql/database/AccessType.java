@@ -2,7 +2,7 @@ package smallsql.database;
 
 /** Represents the access type of a field being used. */
 
-enum AccessType {
+public enum AccessType {
     SELECT,
     WHERE,
     INSERTION,

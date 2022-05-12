@@ -77,7 +77,7 @@ abstract class Command {
      * @param operationType: Operation type as defined by the operation type enum
      * @param columnPairs: Arraylist of Tablename, columnname pairs
      */
-	protected void addFields(int operationType, ArrayList<String[]> columnPairs){
+	protected void addFields(AccessType operationType, ArrayList<String[]> columnPairs){
 	    for (int i = 0; i < columnPairs.size(); i++){
 	        String[] columnPair = columnPairs.get(i);
 	        fieldsUsed.add(new TrackerRecord(operationType, columnPair[0], columnPair[1]));
