@@ -878,6 +878,7 @@ Switch: while(true)
 
 
     private CommandTable createIndex(boolean unique) throws SQLException{
+
         String indexName = nextIdentifier();
         nextToken(MISSING_ON);
         String catalog;
@@ -894,9 +895,14 @@ Switch: while(true)
                 unique ? SQLTokenizer.UNIQUE : SQLTokenizer.INDEX, 
                         expressions, 
                         columns);
+        CommandTable cmdAddIndex = new CommandTable( con.log, catalog, tableName, SQLTokenizer.INDEX );
+        cmdAddIndex.addIndex(indexDesc);
+        
         //TODO Create Index
-		Object[] param = { "Create Index" };
-        throw SmallSQLException.create(Language.UNSUPPORTED_OPERATION, param);
+		// Object[] param = { "Create Index" };
+        // throw SmallSQLException.create(Language.UNSUPPORTED_OPERATION, param);
+
+        return cmdAddIndex;
     }
 
     private CommandCreateDatabase createProcedure() throws SQLException{

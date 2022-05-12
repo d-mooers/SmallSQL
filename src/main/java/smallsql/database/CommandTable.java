@@ -80,6 +80,10 @@ final class CommandTable extends Command{
                 con.getDatabase(false) : 
                 Database.getDatabase( catalog, con, false );
         switch(tableCommandType){
+        case SQLTokenizer.INDEX:
+            Table tableView = (Table)database.getTableView( con, name);
+            indexes.create(con, database, tableView);
+            break;
         case SQLTokenizer.CREATE:
             database.createTable( con, name, columns, indexes, foreignKeys );
             break;
