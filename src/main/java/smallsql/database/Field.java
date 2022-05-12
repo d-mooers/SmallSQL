@@ -26,7 +26,13 @@ public class Field {
         StringBuilder builder = new StringBuilder();
         builder.append(tableName.toLowerCase());
         builder.append('.');
-        builder.append(fieldName.toLowerCase());
+        if (fieldName != null) {
+            builder.append(fieldName.toLowerCase());
+        } else {
+            // DELETE and INSERT commands have null as their fieldName.
+            // TODO: is there a better way to represent this?
+            builder.append("null");
+        }
         return builder.toString();
     }
 
@@ -35,23 +41,28 @@ public class Field {
         return Field.formatKey(tableName, fieldName);
     }
 
-    // operationID will be changed to an enum
-    public void incrementCounter(int operationType) throws Error {
-        switch (operationType) {
-            case 0:
+    public void incrementCounter(AccessType accessType) {
+        switch (accessType) {
+            case SELECT:
                 this.selections++;
                 break;
-            case 1: 
+            case DELETION: 
                 this.deletions++;
                 break;
-            case 2:
+            case INSERTION:
                 this.insertions++;
                 break;
-            case 3:
+            case JOIN:
                 this.joins++;
                 break;
-            default:
-                throw new Error("Unrecognized operationType: " + operationType);
+            case WHERE:
+            case UPDATE:
+            case GROUPBY:
+            case HAVING:
+            case ORDERBY:
+            case NULL:
+                // TODO: handle these
+                break;
         }
     }
 

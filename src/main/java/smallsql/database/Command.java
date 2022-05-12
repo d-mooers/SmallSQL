@@ -73,14 +73,14 @@ abstract class Command {
 
     /**
      * Adds the field pairs under the columnPairs arraylist to the fieldsUsed
-     * instance variable under the given operation type.
-     * @param operationType: Operation type as defined by the operation type enum
+     * instance variable under the given access type
+     * @param accessType: Access type as defined by the AccessType enum
      * @param columnPairs: Arraylist of Tablename, columnname pairs
      */
-	protected void addFields(int operationType, ArrayList<String[]> columnPairs){
+	protected void addFields(AccessType accessType, ArrayList<String[]> columnPairs){
 	    for (int i = 0; i < columnPairs.size(); i++){
 	        String[] columnPair = columnPairs.get(i);
-	        fieldsUsed.add(new TrackerRecord(operationType, columnPair[0], columnPair[1]));
+	        fieldsUsed.add(new TrackerRecord(accessType, columnPair[0], columnPair[1]));
         }
     }
 
@@ -167,7 +167,7 @@ abstract class Command {
 
     public void finalizeColumns(FieldTracker ft){
 	    for (TrackerRecord tr : fieldsUsed){
-	        ft.incrementCounter(tr.getOperationType(), tr.getTableName(), tr.getFieldName());
+	        ft.incrementCounter(tr.getAccessType(), tr.getTableName(), tr.getFieldName());
         }
     }
 
@@ -177,7 +177,7 @@ abstract class Command {
      */
     public void printFieldsUsed(){
         for (TrackerRecord tr: fieldsUsed){
-             String sf = format("Operation: %d; Table: %s; Field: %s", tr.getOperationType(), tr.getTableName(), tr.getFieldName());
+             String sf = format("Operation: %d; Table: %s; Field: %s", tr.getAccessType(), tr.getTableName(), tr.getFieldName());
              System.out.println(sf);
         }
     }

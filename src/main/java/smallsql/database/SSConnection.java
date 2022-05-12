@@ -83,6 +83,7 @@ public class SSConnection implements Connection {
         this.fieldTracker = new FieldTracker(con, con.database);
     }
 
+    
     public FieldTracker getFieldTracker() {
         return this.fieldTracker;
     }

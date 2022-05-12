@@ -33,6 +33,7 @@
 package smallsql.database;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.sql.*;
 import smallsql.tools.language.Language;
 
@@ -337,7 +338,9 @@ final class SQLParser {
     }
     
     private CommandRecommendIndex recIndex() throws SQLException {
-        return new CommandRecommendIndex(con.log);
+        ArrayList<Field> fields = con.getFieldTracker().getFields();
+        IndexRecommender rec = new IndexRecommenderBasic(con, fields);
+        return new CommandRecommendIndex(con.log, rec);
     }
 
     /**

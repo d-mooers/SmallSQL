@@ -1,18 +1,18 @@
 package smallsql.database;
 
 public class TrackerRecord {
-    private int operationType;
+    private AccessType accessType;
     private String tableName;
     private String fieldName;
 
-    public TrackerRecord(int operationType, String tableName, String fieldName){
-        this.operationType = operationType;
+    public TrackerRecord(AccessType accessType, String tableName, String fieldName){
+        this.accessType = accessType;
         this.tableName = tableName;
         this.fieldName = fieldName;
     }
 
-    int getOperationType(){
-        return operationType;
+    AccessType getAccessType(){
+        return accessType;
     }
 
     String getTableName(){

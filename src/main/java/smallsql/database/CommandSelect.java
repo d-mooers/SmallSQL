@@ -276,7 +276,7 @@ class CommandSelect extends Command{
 		if (from != null){
 			from.getColumns();
 			ArrayList<String[]> fromPairs = from.getColumns();
-			addFields(AccessType.JOIN.ordinal(), fromPairs);
+			addFields(AccessType.JOIN, fromPairs);
 		}
 	}
 
@@ -288,19 +288,19 @@ class CommandSelect extends Command{
 	public void postCompileGetColumns(){
     	if (where != null){
     		ArrayList<String[]> wherePairs = where.getColumns(false);
-    		addFields(AccessType.WHERE.ordinal(), wherePairs);
+    		addFields(AccessType.WHERE, wherePairs);
 		}
     	if (groupBy != null){
 			ArrayList<String[]> groupByPairs = groupBy.getColumns(false);
-			addFields(AccessType.GROUPBY.ordinal(), groupByPairs);
+			addFields(AccessType.GROUPBY, groupByPairs);
 		}
 		if (having != null){
 			ArrayList<String[]> havingPairs = having.getColumns(false);
-			addFields(AccessType.HAVING.ordinal(), havingPairs);
+			addFields(AccessType.HAVING, havingPairs);
 		}
 		if (orderBy != null){
 			ArrayList<String[]> orderByPairs = orderBy.getColumns(false);
-			addFields(AccessType.ORDERBY.ordinal(), orderByPairs);
+			addFields(AccessType.ORDERBY, orderByPairs);
 		}
 	}
     

@@ -29,12 +29,19 @@ public class FieldTracker {
         }
     }
 
-    public void incrementCounter(int operationType, Table table, String fieldName) {
-        this.incrementCounter(operationType, table.name, fieldName);
+    public void incrementCounter(AccessType accessType, Table table, String fieldName) {
+        this.incrementCounter(accessType, table.name, fieldName);
     }
 
     private void loadFieldsFromTable() {
         TableResult from = new TableResult(this.table);
+        try {
+            // needed this to prevent a NullPointerException
+            from.init(con);
+            from.execute();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
         try {
              while (from.next()) {
                 String tableName = from.getString(TABLE_NAME_IDX);
@@ -48,12 +55,19 @@ public class FieldTracker {
                 from.deleteRow();
             }
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
     private void saveToTable() {
         TableResult to = new TableResult(table);
+        try {
+            // needed this to prevent a NullPointerException
+            to.init(con);
+            to.execute();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
         Set<String> keys = this.fieldTracker.keySet();
         for (String key : keys) {
             Expression[] updateValues = new ExpressionValue[JOINS_IDX + 1];
@@ -68,11 +82,12 @@ public class FieldTracker {
                 to.insertRow(updateValues);
             } catch (Exception e) {
                 System.out.println("Dang it failed!");
+                e.printStackTrace();
             }
         }
     }
 
-    public void incrementCounter(int operationType, String tableName, String fieldName) {
+    public void incrementCounter(AccessType accessType, String tableName, String fieldName) {
         Field field;
         if (!this.fieldTracker.containsKey(Field.formatKey(tableName, fieldName))) {
             field = new Field(tableName, fieldName);
@@ -80,7 +95,7 @@ public class FieldTracker {
         } else {
             field = this.fieldTracker.get(Field.formatKey(tableName, fieldName));
         }
-        field.incrementCounter(operationType);
+        field.incrementCounter(accessType);
     }
 
     public boolean loadOrCreateTable() {
@@ -92,42 +107,44 @@ public class FieldTracker {
             }
             return true;
         } catch (SQLException e) {
+            // TODO: this seems to be failing when trying to reopen the table
             System.out.println("Fieldtracker table does not exist yet");
             Columns columns = new Columns();
 
             Column tableName = new Column();
             tableName.setName("table_name");
-            tableName.setDataType(SQLTokenizer.SQL_LONGVARCHAR);
+            tableName.setDataType(SQLTokenizer.LONGVARCHAR);
             columns.add(tableName);
 
             Column fieldName = new Column();
             fieldName.setName("field_name");
-            fieldName.setDataType(SQLTokenizer.SQL_LONGVARCHAR);
+            fieldName.setDataType(SQLTokenizer.LONGVARCHAR);
             columns.add(fieldName);
 
             Column selections = new Column();
             selections.setName("selections");
-            selections.setDataType(SQLTokenizer.SQL_INTEGER);
+            selections.setDataType(SQLTokenizer.INT);
             columns.add(selections);
 
             Column deletions = new Column();
             deletions.setName("deletions");
-            deletions.setDataType(SQLTokenizer.SQL_INTEGER);
+            deletions.setDataType(SQLTokenizer.INT);
             columns.add(deletions);
 
             Column insertions = new Column();
             insertions.setName("insertions");
-            insertions.setDataType(SQLTokenizer.SQL_INTEGER);
+            insertions.setDataType(SQLTokenizer.INT);
             columns.add(insertions);
 
             Column joins = new Column();
             joins.setName("joins");
-            joins.setDataType(SQLTokenizer.SQL_INTEGER);
+            joins.setDataType(SQLTokenizer.INT);
             columns.add(joins);
             try {
                 this.table = db.createTable(this.con, TABLE_NAME, columns, new IndexDescriptions(), new ForeignKeys());
             } catch (Exception error) {
                 System.out.println("Uhoh, failed");
+                error.printStackTrace();
             }
             return false;
         }
@@ -136,5 +153,9 @@ public class FieldTracker {
     public boolean save() {
         this.saveToTable();
         return true;
+    }
+
+    public ArrayList<Field> getFields() {
+        return new ArrayList<Field>(this.fieldTracker.values());
     }
 }
