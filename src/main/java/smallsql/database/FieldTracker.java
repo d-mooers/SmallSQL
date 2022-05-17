@@ -49,7 +49,6 @@ public class FieldTracker {
                 Field field = new Field(tableName, fieldName, selections, deletions, insertions, joins);
                 this.fieldTracker.put(field.toString(), field);
                 from.deleteRow();
-                System.out.println("Reading from persisted tracker: " + field.outputResult());
             }
         } catch (Exception e) {
             System.out.println("Failed in loadFieldsFromTable: " + e);
@@ -70,7 +69,6 @@ public class FieldTracker {
         for (String key : keys) {
             Expression[] updateValues = new ExpressionValue[JOINS_IDX + 1];
             Field field = this.fieldTracker.get(key);
-            System.out.println("Saving field: " + field.outputResult());
             updateValues[TABLE_NAME_IDX] = new ExpressionValue(field.getTableName(), SQLTokenizer.LONGNVARCHAR);
             updateValues[FIELD_NAME_IDX] = new ExpressionValue(field.getFieldName(), SQLTokenizer.LONGNVARCHAR);
             updateValues[INSERTIONS_IDX] = new ExpressionValue(field.getInsertions(), SQLTokenizer.INT);
@@ -80,7 +78,7 @@ public class FieldTracker {
             try {
                 to.insertRow(updateValues);
             } catch (Exception e) {
-                System.out.println("Dang it failed!");
+                System.out.println("Failed writing field " + field.toString());
                 System.out.println(e);
             }
         }
