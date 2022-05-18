@@ -51,11 +51,7 @@ public class TestIndexRecommender extends BasicTestCase {
 
     @Test
     public void testBasic() throws Exception {        
-        ArrayList<Field> fields = new ArrayList<Field>(con.getFieldTracker().getFieldTracker().values());
-        for (Field f : fields) {
-            System.out.print(f.getFieldName());
-            System.out.println(f.getSelections());
-        }
+        ArrayList<Field> fields = new ArrayList<Field>(con.getFieldTracker().getFields());
         IndexRecommender ir = new IndexRecommenderBasic(con, fields);
         
         ArrayList<String> recommendedIndexes = ir.recommendIndex();

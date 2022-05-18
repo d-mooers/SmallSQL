@@ -161,10 +161,6 @@ public class FieldTracker {
         return true;
     }
 
-
-    public Map<String, Field> getFieldTracker() {
-        return this.fieldTracker;
-
     public ArrayList<Field> getFields() {
         return new ArrayList<Field>(this.fieldTracker.values());
     }
