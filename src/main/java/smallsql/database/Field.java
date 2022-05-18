@@ -28,6 +28,10 @@ public class Field {
         builder.append('.');
         if (fieldName != null) {
             builder.append(fieldName.toLowerCase());
+        } else {
+            // DELETE and INSERT commands have null as their fieldName.
+            // TODO: is there a better way to represent this?
+            builder.append("null");
         }
         return builder.toString();
     }

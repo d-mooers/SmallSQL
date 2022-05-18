@@ -29,8 +29,8 @@ public class FieldTracker {
         }
     }
 
-    public void incrementCounter(AccessType operationType, Table table, String fieldName) {
-        this.incrementCounter(operationType, table.name, fieldName);
+    public void incrementCounter(AccessType accessType, Table table, String fieldName) {
+        this.incrementCounter(accessType, table.name, fieldName);
     }
 
     private void loadFieldsFromTable() {
@@ -91,7 +91,7 @@ public class FieldTracker {
         }
     }
 
-    public void incrementCounter(AccessType operationType, String tableName, String fieldName) {
+    public void incrementCounter(AccessType accessType, String tableName, String fieldName) {
         Field field;
         if (!this.fieldTracker.containsKey(Field.formatKey(tableName, fieldName))) {
             field = new Field(tableName, fieldName);
@@ -99,7 +99,7 @@ public class FieldTracker {
         } else {
             field = this.fieldTracker.get(Field.formatKey(tableName, fieldName));
         }
-        field.incrementCounter(operationType);
+        field.incrementCounter(accessType);
     }
 
     public boolean loadOrCreateTable() {
@@ -149,6 +149,7 @@ public class FieldTracker {
                 this.table = db.createTable(this.con, TABLE_NAME, columns, new IndexDescriptions(), new ForeignKeys());
             } catch (Exception error) {
                 System.out.println("Uhoh, failed");
+                error.printStackTrace();
             }
             return false;
         }
@@ -160,7 +161,11 @@ public class FieldTracker {
         return true;
     }
 
+
     public Map<String, Field> getFieldTracker() {
         return this.fieldTracker;
+
+    public ArrayList<Field> getFields() {
+        return new ArrayList<Field>(this.fieldTracker.values());
     }
 }
