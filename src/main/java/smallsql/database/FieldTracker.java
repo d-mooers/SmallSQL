@@ -159,4 +159,8 @@ public class FieldTracker {
         this.saveToTable();
         return true;
     }
+
+    public Map<String, Field> getFieldTracker() {
+        return this.fieldTracker;
+    }
 }

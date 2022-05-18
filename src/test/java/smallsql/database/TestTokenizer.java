@@ -84,7 +84,7 @@ public class TestTokenizer extends BasicTestCase {
         conn = basicTestFrame.createConnection("?locale=en", null);
         stat = conn.createStatement();
         // Direct Drop table would crash this
-        dropTable();
+        // dropTable();
         stat.close();
         conn.close();
     }
