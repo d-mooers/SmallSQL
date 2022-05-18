@@ -11,14 +11,16 @@ public abstract class IndexRecommender {
 
     IndexRecommender(SSConnection con) {
         this.con = con;
+        this.recommendedIndexes = new ArrayList<>();
     }
 
     IndexRecommender(SSConnection con, ArrayList<Field> fields) {
         this.con = con;
         this.fields = fields;
+        this.recommendedIndexes = new ArrayList<>();
     }
 
-    abstract ArrayList<String> recommendIndex();
+    public abstract ArrayList<String> recommendIndex();
 
     protected Boolean containsIndex(Field field) {
         Table table;
