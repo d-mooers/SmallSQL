@@ -937,6 +937,13 @@ public class SQLTokenizer {
 		addKeyWord( "AVG",          AVG);
 	}
 
+
+    //Rec Index Options
+    static final int BASIC      = 1500;
+    static{
+        addKeyWord("BASIC",         BASIC);
+    }
+
 }
 
 class SearchNode{

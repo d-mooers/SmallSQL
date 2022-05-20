@@ -339,7 +339,12 @@ final class SQLParser {
     
     private CommandRecommendIndex recIndex() throws SQLException {
         ArrayList<Field> fields = con.getFieldTracker().getFields();
-        IndexRecommender rec = new IndexRecommenderBasic(con, fields);
+        IndexRecommender rec = null;
+        SQLToken token = nextToken(REC_INDEX);
+        switch (token.value) {
+            case SQLTokenizer.BASIC:
+                rec = new IndexRecommenderBasic(con, fields);
+        }
         return new CommandRecommendIndex(con.log, rec);
     }
 
@@ -2017,6 +2022,7 @@ Switch: while(true)
 	private static final int[] MISSING_THEN = {SQLTokenizer.THEN};
 	private static final int[] MISSING_WHEN_ELSE_END = {SQLTokenizer.WHEN, SQLTokenizer.ELSE, SQLTokenizer.END};
 	private static final int[] MISSING_ADD_ALTER_DROP = {SQLTokenizer.ADD, SQLTokenizer.ALTER, SQLTokenizer.DROP};
+    private static final int[] REC_INDEX = {SQLTokenizer.BASIC};
 	
 	
 }
