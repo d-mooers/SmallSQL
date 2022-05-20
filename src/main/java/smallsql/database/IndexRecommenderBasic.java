@@ -12,7 +12,7 @@ public class IndexRecommenderBasic extends IndexRecommender {
         super(con);
     }
 
-    public ArrayList<String> recommendIndex() {
+    public ArrayList<String[]> recommendIndex() {
         int insertions = 0;
         int deletions = 0;
         for (Field field : this.fields) {
@@ -22,10 +22,13 @@ public class IndexRecommenderBasic extends IndexRecommender {
             }
         }
         for (Field field : this.fields) {
+            String[] tuple = new String[2];
+            tuple[0] = field.getTableName();
+            tuple[1] = field.getFieldName();
             if ((field.getJoins() + field.getSelections()) - (deletions + insertions) > 0
-                    && !this.recommendedIndexes.contains(field.getFieldName())
+                    && !this.recommendedIndexes.contains(tuple)
                     && !this.containsIndex(field)) {
-                this.recommendedIndexes.add(field.getFieldName());
+                this.recommendedIndexes.add(tuple);
             }
         }
         return this.recommendedIndexes;

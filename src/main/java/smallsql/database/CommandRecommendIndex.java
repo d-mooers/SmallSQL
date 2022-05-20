@@ -15,7 +15,12 @@ public class CommandRecommendIndex extends Command {
     @Override
     void executeImpl(SSConnection con, SSStatement st) throws Exception {
         // check if session?
-        // TODO: do this in CLI, not this class
-        System.out.println(rec.recommendIndex());
+        String format = "%-15.15s | %15.15s %n";
+        System.out.println("Recommended Indexes:\n");
+        System.out.printf(format, "Table Name", "Field Name");
+        System.out.println("---------------------------------");
+        for (String[] index : rec.recommendIndex()) {
+            System.out.printf(format, index[0], index[1]);
+        }
     }
 }
