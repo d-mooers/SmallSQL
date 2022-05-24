@@ -59,5 +59,72 @@ public class TestFieldTracker extends BasicTestCase {
         assertTrue(recommendedIndexes.get(0)[0].equals(TABLE_NAME));
         assertTrue(recommendedIndexes.get(0)[1].equals("colA"));
     }
+
+    @Test
+    public void test_1() throws Exception {        
+        ArrayList<Field> fields = new ArrayList<Field>(con.getFieldTracker().getFields());
+        IndexRecommender ir = new IndexRecommenderBasic(con, fields);
+        
+        ArrayList<String[]> recommendedIndexes = ir.recommendIndex();
+        assertTrue(recommendedIndexes.size() == 1);
+        assertTrue(recommendedIndexes.get(0)[0].equals(TABLE_NAME));
+        assertTrue(recommendedIndexes.get(0)[1].equals("colA"));
+    }
+
+    @Test
+    public void test_2() throws Exception {        
+        ArrayList<Field> fields = new ArrayList<Field>(con.getFieldTracker().getFields());
+        IndexRecommender ir = new IndexRecommenderBasic(con, fields);
+        
+        ArrayList<String[]> recommendedIndexes = ir.recommendIndex();
+        assertTrue(recommendedIndexes.size() == 1);
+        assertTrue(recommendedIndexes.get(0)[0].equals(TABLE_NAME));
+        assertTrue(recommendedIndexes.get(0)[1].equals("colA"));
+    }
+
+    @Test
+    public void test_3() throws Exception {        
+        ArrayList<Field> fields = new ArrayList<Field>(con.getFieldTracker().getFields());
+        IndexRecommender ir = new IndexRecommenderBasic(con, fields);
+        
+        ArrayList<String[]> recommendedIndexes = ir.recommendIndex();
+        assertTrue(recommendedIndexes.size() == 1);
+        assertTrue(recommendedIndexes.get(0)[0].equals(TABLE_NAME));
+        assertTrue(recommendedIndexes.get(0)[1].equals("colA"));
+    }
+
+    @Test
+    public void test_4() throws Exception {        
+        ArrayList<Field> fields = new ArrayList<Field>(con.getFieldTracker().getFields());
+        IndexRecommender ir = new IndexRecommenderBasic(con, fields);
+        
+        ArrayList<String[]> recommendedIndexes = ir.recommendIndex();
+        assertTrue(recommendedIndexes.size() == 1);
+        assertTrue(recommendedIndexes.get(0)[0].equals(TABLE_NAME));
+        assertTrue(recommendedIndexes.get(0)[1].equals("colA"));
+    }
+
+    @Test
+    public void test_5() throws Exception {        
+        ArrayList<Field> fields = new ArrayList<Field>(con.getFieldTracker().getFields());
+        IndexRecommender ir = new IndexRecommenderBasic(con, fields);
+        
+        ArrayList<String[]> recommendedIndexes = ir.recommendIndex();
+        assertTrue(recommendedIndexes.size() == 1);
+        assertTrue(recommendedIndexes.get(0)[0].equals(TABLE_NAME));
+        assertTrue(recommendedIndexes.get(0)[1].equals("colA"));
+    }
+
+    @Test
+    public void test_6() throws Exception {        
+        ArrayList<Field> fields = new ArrayList<Field>(con.getFieldTracker().getFields());
+        IndexRecommender ir = new IndexRecommenderBasic(con, fields);
+        
+        ArrayList<String[]> recommendedIndexes = ir.recommendIndex();
+        assertTrue(recommendedIndexes.size() == 1);
+        assertTrue(recommendedIndexes.get(0)[0].equals(TABLE_NAME));
+        assertTrue(recommendedIndexes.get(0)[1].equals("colA"));
+    }
+
 }
 
