@@ -940,8 +940,10 @@ public class SQLTokenizer {
 
     //Rec Index Options
     static final int BASIC      = 1500;
+    static final int ADVANCED   = 1501;
     static{
         addKeyWord("BASIC",         BASIC);
+        addKeyWord("ADVANCED",      ADVANCED);
     }
 
 }
