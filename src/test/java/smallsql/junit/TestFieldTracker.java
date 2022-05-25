@@ -22,7 +22,7 @@ import org.junit.jupiter.api.TestInstance;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TestFieldTracker extends BasicTestCase {
 
-    private static final String TABLE_NAME = "table_index_recommender";
+    private static final String TABLE_NAME = "table_test";
     private static SSConnection con;
     private static Statement stat;
 
