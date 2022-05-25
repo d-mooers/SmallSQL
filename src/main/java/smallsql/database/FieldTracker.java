@@ -164,4 +164,13 @@ public class FieldTracker {
     public ArrayList<Field> getFields() {
         return new ArrayList<Field>(this.fieldTracker.values());
     }
+
+    public int getSelections(String tableName, String fieldName) {
+        Field field = this.fieldTracker.get(Field.formatKey(tableName, fieldName));
+        return field.getSelections();
+    }
+
+    public void reset() {
+        this.fieldTracker = new HashMap<>();
+    }
 }
