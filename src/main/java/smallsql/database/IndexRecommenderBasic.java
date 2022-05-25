@@ -1,6 +1,7 @@
 package smallsql.database;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class IndexRecommenderBasic extends IndexRecommender {
     
@@ -13,19 +14,22 @@ public class IndexRecommenderBasic extends IndexRecommender {
     }
 
     public ArrayList<String[]> recommendIndex() {
-        int insertions = 0;
-        int deletions = 0;
+        // tracks number of deletions and insertions per table
+        HashMap<String, Integer> tableUpdates = new HashMap<>();
         for (Field field : this.fields) {
             if (field.getFieldName() == null) {
-                insertions = field.getInsertions();
-                deletions = field.getDeletions();
+                String table = field.getTableName();
+                int val = tableUpdates.getOrDefault(table, 0);
+                val = val + field.getDeletions() + field.getInsertions();
+                tableUpdates.put(table, val);
             }
         }
         for (Field field : this.fields) {
             String[] tuple = new String[2];
-            tuple[0] = field.getTableName();
+            String table = field.getTableName();
+            tuple[0] = table;
             tuple[1] = field.getFieldName();
-            if ((field.getJoins() + field.getSelections()) - (deletions + insertions) > 0
+            if ((field.getJoins() + field.getSelections()) - (tableUpdates.getOrDefault(table, 0)) > 0
                     && !this.recommendedIndexes.contains(tuple)
                     && !this.containsIndex(field)) {
                 this.recommendedIndexes.add(tuple);
