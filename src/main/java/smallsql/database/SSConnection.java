@@ -46,7 +46,7 @@ import java.util.concurrent.Executor;
 public class SSConnection implements Connection {
 
     private final boolean readonly;
-    private final FieldTracker fieldTracker;
+    private FieldTracker fieldTracker;
     private Database database;
     private boolean autoCommit = true;
     int isolationLevel = TRANSACTION_READ_COMMITTED; // see also getDefaultTransactionIsolation
@@ -264,6 +264,8 @@ public class SSConnection implements Connection {
     public void setCatalog(String catalog) throws SQLException {
         testClosedConnection();
         database = Database.getDatabase(catalog, this, false);
+        this.fieldTracker.save();
+        this.fieldTracker = new FieldTracker(this, database);
     }
 
 
