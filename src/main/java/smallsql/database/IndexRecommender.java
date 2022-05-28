@@ -33,7 +33,7 @@ public abstract class IndexRecommender {
         IndexDescriptions indexes = table.indexes;
         for (int i = 0; i < indexes.size(); i++) {
             IndexDescription index = indexes.get(i);
-            if (index.getName().equals(field.getFieldName())) {
+            if (index.getColumns().get(0).equals(field.getFieldName())) {
                 return true;
             }
         }
