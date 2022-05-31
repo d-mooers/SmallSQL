@@ -6,7 +6,8 @@ import java.util.ArrayList;
 public abstract class IndexRecommender {
     
     protected ArrayList<Field> fields;
-    protected ArrayList<String> recommendedIndexes;
+    // list of list of strings, first val is table name and second val is field name
+    protected ArrayList<String[]> recommendedIndexes;
     private SSConnection con;
 
     IndexRecommender(SSConnection con) {
@@ -20,7 +21,7 @@ public abstract class IndexRecommender {
         this.recommendedIndexes = new ArrayList<>();
     }
 
-    public abstract ArrayList<String> recommendIndex();
+    public abstract ArrayList<String[]> recommendIndex();
 
     protected Boolean containsIndex(Field field) {
         Table table;
@@ -47,7 +48,7 @@ public abstract class IndexRecommender {
         return this.fields;
     }
 
-    public ArrayList<String> getRecommendedIndexes() {
+    public ArrayList<String[]> getRecommendedIndexes() {
         return this.recommendedIndexes;
     }
 }

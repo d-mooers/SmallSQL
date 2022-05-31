@@ -25,15 +25,15 @@ public class TestIndexRecommender extends BasicTestCase {
 
     @AfterAll
     public void tearDown() throws SQLException {
+        stat.close();
+        con.close();
     }
 
     @BeforeAll
     public void setUp() throws SQLException {
         con = (SSConnection)basicTestFrame.getConnection();
         stat = con.createStatement();
-        try {
-            stat.execute("DROP TABLE " + TABLE_NAME);
-        } catch (SQLException e) {}
+        dropTable();
         createTable();
     }
 
@@ -49,14 +49,21 @@ public class TestIndexRecommender extends BasicTestCase {
         stat.execute("SELECT colB FROM " + TABLE_NAME + " WHERE colB = 1");
     }
 
+    private void dropTable() {
+        try {
+            stat.execute("DROP TABLE " + TABLE_NAME);
+        } catch (SQLException e) {}
+    }
+
     @Test
     public void testBasic() throws Exception {        
         ArrayList<Field> fields = new ArrayList<Field>(con.getFieldTracker().getFields());
         IndexRecommender ir = new IndexRecommenderBasic(con, fields);
         
-        ArrayList<String> recommendedIndexes = ir.recommendIndex();
+        ArrayList<String[]> recommendedIndexes = ir.recommendIndex();
         assertTrue(recommendedIndexes.size() == 1);
-        assertTrue(recommendedIndexes.get(0).equals("colA"));
+        assertTrue(recommendedIndexes.get(0)[0].equals(TABLE_NAME));
+        assertTrue(recommendedIndexes.get(0)[1].equals("colA"));
     }
 }
 

@@ -212,6 +212,7 @@ final class Database{
             }else{
             	Table.drop( this, tableName );
             }
+			con.getFieldTracker().drop(tableName);
         }
     }
     

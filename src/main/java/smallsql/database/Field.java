@@ -36,6 +36,10 @@ public class Field {
         return builder.toString();
     }
 
+    public String formatKey() {
+        return Field.formatKey(this.tableName, this.fieldName);
+    }
+
     @Override
     public String toString() {
         return Field.formatKey(tableName, fieldName);
