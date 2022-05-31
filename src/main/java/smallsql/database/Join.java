@@ -70,6 +70,9 @@ final class Join extends RowSource{
      * and their corresponding table names
      **/
     public ArrayList<String[]> getColumns(){
+        if (condition == null) {
+            return new ArrayList<>(0);
+        }
         // Hashmap for alias to table name
         HashMap<String, String> aliasMap = new HashMap<>();
         ArrayList<String[]> conditionFields = condition.getColumns(true);

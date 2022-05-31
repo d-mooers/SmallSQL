@@ -97,7 +97,7 @@ class SSStatement implements Statement {
 
 
     final public boolean execute(String sql) throws SQLException {
-        //System.out.println(sql);
+        System.out.println(sql);
         executeImpl(sql);
         return cmd.getResultSet() != null;
     }
