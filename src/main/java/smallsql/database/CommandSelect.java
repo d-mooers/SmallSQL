@@ -274,7 +274,6 @@ class CommandSelect extends Command{
 	 */
 	public void preCompileGetColumns(){
 		if (from != null){
-			from.getColumns();
 			ArrayList<String[]> fromPairs = from.getColumns();
 			addFields(AccessType.JOIN, fromPairs);
 		}
