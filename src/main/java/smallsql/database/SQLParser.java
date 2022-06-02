@@ -913,7 +913,7 @@ Switch: while(true)
                         expressions, 
                         columns);
         CommandTable cmdAddIndex = new CommandTable( con.log, catalog, tableName, SQLTokenizer.INDEX );
-        cmdAddIndex.addIndex(indexDesc);
+        cmdAddIndex.setIndex(indexDesc);
         
         //TODO Create Index
 		// Object[] param = { "Create Index" };

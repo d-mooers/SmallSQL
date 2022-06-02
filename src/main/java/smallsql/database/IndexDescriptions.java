@@ -125,6 +125,16 @@ class IndexDescriptions {
 		}
 	}
 
+	void drop(Database database, int idx) throws Exception {
+		data[idx].drop(database);
+		data[idx] = null;
+		size --;
+		for (int i = idx; i < size; i ++) {
+			data[idx] = data[idx + 1];
+		}
+		data[size] = null;
+	}
+
 
     void close() throws Exception{
         for(int i=0; i<size; i++){

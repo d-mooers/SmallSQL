@@ -166,6 +166,14 @@ public class FieldTracker {
         return new ArrayList<Field>(this.fieldTracker.values());
     }
 
+    public int getSelections(String tableName, String fieldName) {
+        Field field = this.fieldTracker.get(Field.formatKey(tableName, fieldName));
+        return field.getSelections();
+    }
+
+    public void reset() {
+        this.fieldTracker = new HashMap<>();
+    }
     // drop all fields from a certain table
     public void drop(String tableName) {
         // avoid modifying list while iterating over it

@@ -70,17 +70,34 @@ final class Join extends RowSource{
      * and their corresponding table names
      **/
     public ArrayList<String[]> getColumns(){
-        if (condition == null) {
-            return new ArrayList<>(0);
-        }
+        if (condition == null) return new ArrayList<String[]>(0);
         // Hashmap for alias to table name
         HashMap<String, String> aliasMap = new HashMap<>();
-        ArrayList<String[]> conditionFields = condition.getColumns(true);
+        ArrayList<String[]> conditionFields = condition.getColumns(false);
         aliasMap.put(left.getAlias(), left.getName());
         aliasMap.put(right.getAlias(), right.getName());
         for (int i = 0; i < conditionFields.size(); i++){
             String[] curElement = conditionFields.get(i);
-            curElement[0] = aliasMap.get(curElement[0]);
+            if (curElement[0] == null) {
+                if (left instanceof TableResult) {
+                    Columns leftColumns = ((TableResult)left).getTableView().columns;
+                    for (int j = 0; j < leftColumns.size(); j ++) {
+                        if (curElement[1].equals(leftColumns.get(j).getName())) {
+                            curElement[0] = left.getName();
+                        }
+                    }
+                }
+                if (right instanceof TableResult) {
+                    Columns rightColumns = ((TableResult)right).getTableView().columns;
+                    for (int j = 0; j < rightColumns.size(); j ++) {
+                        if (curElement[1].equals(rightColumns.get(j).getName())) {
+                            curElement[0] = right.getName();
+                        }
+                    }
+                }
+            } else {
+                curElement[0] = aliasMap.get(curElement[0]);
+            }
         }
         return conditionFields;
     }
