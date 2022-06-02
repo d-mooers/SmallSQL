@@ -21,8 +21,6 @@ group by
 order by
 	o_totalprice desc,
 	o_orderdate;
-
-
 SELECT
      SUM(l_extendedprice* (1 - l_discount)) AS revenue
 FROM
@@ -50,8 +48,6 @@ WHERE
 		AND l_quantity >= 20 AND l_quantity <= 20 + 10
 		AND l_shipinstruct = 'DELIVER IN PERSON'
      );
-
-
 SELECT
  	s_name,
      s_address
@@ -63,8 +59,6 @@ WHERE
      AND n_name = 'CANADA'
 ORDER BY
      s_name;
-
-
 SELECT n_name, SUM(l_extendedprice * (1 - l_discount)) AS revenue
   FROM customer, orders, lineitem, supplier, nation, region
  WHERE c_custkey = o_custkey
@@ -77,16 +71,12 @@ SELECT n_name, SUM(l_extendedprice * (1 - l_discount)) AS revenue
    AND o_orderdate >= '1994-01-01'
    AND o_orderdate < '1995-01-01'
 GROUP BY n_name;
-
-
 SELECT o_orderpriority, COUNT(*) AS order_count
   FROM orders
  WHERE o_orderdate >= '1993-07-01'
    AND o_orderdate < '1993-07-01'
 GROUP BY o_orderpriority
 ORDER BY o_orderpriority;
-
-
 SELECT
      SUM(l_extendedprice * l_discount) AS revenue
 FROM
@@ -96,49 +86,45 @@ WHERE
      AND l_shipdate < '1995-01-01'
      AND l_discount > 0.05 and l_discount < 0.070001
      AND l_quantity < 24;
-
-
--- SELECT
---      supp_nation,
---      cust_nation,
---      l_year,
---      SUM(volume) AS revenue
--- FROM
---      (
--- 		SELECT
--- 			n1.n_name AS supp_nation,
--- 			n2.n_name AS cust_nation,
--- 			YEAR(l_shipdate) AS l_year,
--- 			l_extendedprice * (1 - l_discount) AS volume
--- 		FROM
--- 			supplier,
--- 			lineitem,
--- 			orders,
--- 			customer,
--- 			nation n1,
--- 			nation n2
--- 		WHERE
--- 			s_suppkey = l_suppkey
--- 			AND o_orderkey = l_orderkey
--- 			AND c_custkey = o_custkey
--- 			AND s_nationkey = n1.n_nationkey
--- 			AND c_nationkey = n2.n_nationkey
--- 			AND (
--- 				(n1.n_name = 'FRANCE' AND n2.n_name = 'GERMANY')
--- 				OR (n1.n_name = 'GERMANY' AND n2.n_name = 'FRANCE')
--- 			)
--- 			AND l_shipdate > '1995-01-01' AND l_shipdate < '1996-12-31'
---      ) 
--- GROUP BY
---      supp_nation,
---      cust_nation,
---      l_year
--- ORDER BY
---      supp_nation,
---      cust_nation,
---      l_year;
-
-
+SELECT
+     supp_nation,
+     cust_nation,
+     l_year,
+     SUM(volume) AS revenue
+FROM
+     (
+		SELECT
+			n1.n_name AS supp_nation,
+			n2.n_name AS cust_nation,
+			YEAR(l_shipdate) AS l_year,
+			l_extendedprice * (1 - l_discount) AS volume
+		FROM
+			supplier,
+			lineitem,
+			orders,
+			customer,
+			nation n1,
+			nation n2
+		WHERE
+			s_suppkey = l_suppkey
+			AND o_orderkey = l_orderkey
+			AND c_custkey = o_custkey
+			AND s_nationkey = n1.n_nationkey
+			AND c_nationkey = n2.n_nationkey
+			AND (
+				(n1.n_name = 'FRANCE' AND n2.n_name = 'GERMANY')
+				OR (n1.n_name = 'GERMANY' AND n2.n_name = 'FRANCE')
+			)
+			AND l_shipdate > '1995-01-01' AND l_shipdate < '1996-12-31'
+     ) 
+GROUP BY
+     supp_nation,
+     cust_nation,
+     l_year
+ORDER BY
+     supp_nation,
+     cust_nation,
+     l_year;
 SELECT 
      l_orderkey,
      SUM(l_extendedprice * (1 - l_discount)) AS revenue,
@@ -152,8 +138,6 @@ WHERE c_mktsegment = 'BUILDING'
   AND l_shipdate > '1995-03-15'
 GROUP BY l_orderkey, o_orderdate, o_shippriority
 ORDER BY o_orderdate;
-
-
 SELECT 
      s_acctbal,
      s_name,
@@ -173,8 +157,6 @@ WHERE
      AND n_regionkey = r_regionkey
      AND r_name = 'EUROPE'
 ORDER BY s_acctbal DESC, n_name, s_name, p_partkey;
-
-
 select
        l_returnflag,
        l_linestatus,
@@ -196,81 +178,71 @@ select
  order by
        l_returnflag,
        l_linestatus;
-
-
--- SELECT
---      nation,
---      o_year,
---      SUM(amount) AS sum_profit
--- FROM
---      (
--- 		SELECT
--- 			n_name AS nation,
--- 			YEAR(o_orderdate) AS o_year,
--- 			l_extendedprice * (1 - l_discount) - ps_supplycost * l_quantity AS amount
--- 		FROM
--- 			part,
--- 			supplier,
--- 			lineitem,
--- 			partsupp,
--- 			orders,
--- 			nation
--- 		WHERE
--- 			s_suppkey = l_suppkey
--- 			AND ps_suppkey = l_suppkey
--- 			AND ps_partkey = l_partkey
--- 			AND p_partkey = l_partkey
--- 			AND o_orderkey = l_orderkey
--- 			AND s_nationkey = n_nationkey
--- 			AND p_name LIKE '%green%'
---      )
--- GROUP BY
---      nation,
---      o_year
--- ORDER BY
---      nation,
---      o_year DESC;
-
-
--- SELECT
---      o_year,
---      SUM(CASE
--- 		WHEN nation = 'BRAZIL' THEN volume
--- 		ELSE 0
---      END) / SUM(volume) AS mkt_share
--- FROM
---      (
--- 		SELECT
--- 			YEAR(o_orderdate) AS o_year,
--- 			l_extendedprice * (1 - l_discount) AS volume,
--- 			n2.n_name AS nation
--- 		FROM
--- 			part,
--- 			supplier,
--- 			lineitem,
--- 			orders,
--- 			customer,
--- 			nation n1,
--- 			nation n2,
--- 			region
--- 		WHERE
--- 			p_partkey = l_partkey
--- 			AND s_suppkey = l_suppkey
--- 			AND l_orderkey = o_orderkey
--- 			AND o_custkey = c_custkey
--- 			AND c_nationkey = n1.n_nationkey
--- 			AND n1.n_regionkey = r_regionkey
--- 			AND r_name = 'AMERICA'
--- 			AND s_nationkey = n2.n_nationkey
--- 			AND o_orderdate BETWEEN CAST ('1995-01-01' AS DATE) AND CAST ('1996-12-31' AS DATE)
--- 			AND p_type = 'ECONOMY ANODIZED STEEL'
---      ) 
--- GROUP BY
---      o_year
--- ORDER BY
---      o_year;
-
-
+SELECT
+     nation,
+     o_year,
+     SUM(amount) AS sum_profit
+FROM
+     (
+		SELECT
+			n_name AS nation,
+			YEAR(o_orderdate) AS o_year,
+			l_extendedprice * (1 - l_discount) - ps_supplycost * l_quantity AS amount
+		FROM
+			part,
+			supplier,
+			lineitem,
+			partsupp,
+			orders,
+			nation
+		WHERE
+			s_suppkey = l_suppkey
+			AND ps_suppkey = l_suppkey
+			AND ps_partkey = l_partkey
+			AND p_partkey = l_partkey
+			AND o_orderkey = l_orderkey
+			AND s_nationkey = n_nationkey
+			AND p_name LIKE '%green%'
+     )
+GROUP BY
+     nation,
+     o_year
+ORDER BY
+     nation,
+     o_year DESC;
+SELECT
+     o_year,
+FROM
+     (
+		SELECT
+			YEAR(o_orderdate) AS o_year,
+			l_extendedprice * (1 - l_discount) AS volume,
+			n2.n_name AS nation
+		FROM
+			part,
+			supplier,
+			lineitem,
+			orders,
+			customer,
+			nation n1,
+			nation n2,
+			region
+		WHERE
+			p_partkey = l_partkey
+			AND s_suppkey = l_suppkey
+			AND l_orderkey = o_orderkey
+			AND o_custkey = c_custkey
+			AND c_nationkey = n1.n_nationkey
+			AND n1.n_regionkey = r_regionkey
+			AND r_name = 'AMERICA'
+			AND s_nationkey = n2.n_nationkey
+			AND o_orderdate BETWEEN CAST ('1995-01-01' AS DATE) AND CAST ('1996-12-31' AS DATE)
+			AND p_type = 'ECONOMY ANODIZED STEEL'
+     ) 
+GROUP BY
+     o_year
+ORDER BY
+     o_year;
 SELECT
      ps_partkey,
      SUM(ps_supplycost * ps_availqty) AS value
@@ -284,8 +256,6 @@ WHERE
      AND n_name = 'GERMANY'
 GROUP BY
      ps_partkey;
-
-
 SELECT 
      c_custkey,
      c_name,
@@ -315,8 +285,6 @@ GROUP BY
      n_name,
      c_address,
      c_comment;
-
-
 SELECT
      l_shipmode
 FROM
@@ -332,8 +300,6 @@ GROUP BY
      l_shipmode
 ORDER BY
      l_shipmode;
-
-
 SELECT
      SUM(l_extendedprice) / 7.0 AS avg_yearly
 FROM
@@ -343,8 +309,6 @@ WHERE
      p_partkey = l_partkey
      AND p_brand = 'Brand#23'
      AND p_container = 'MED BOX';
-
-
 SELECT 
      p_brand,
      p_type,
@@ -363,5 +327,3 @@ ORDER BY
      p_brand,
      p_type,
      p_size;
-
-
