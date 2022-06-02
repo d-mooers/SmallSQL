@@ -7,19 +7,21 @@ public class Field {
     private int deletions;
     private int insertions;
     private int joins;
+    private int updates;
 
     public Field(String tableName, String fieldName) {
         this.tableName = tableName;
         this.fieldName = fieldName;
     }
 
-    public Field(String tableName, String fieldName, int selections, int deletions, int insertions, int joins) {
+    public Field(String tableName, String fieldName, int selections, int deletions, int insertions, int joins, int updates) {
         this.tableName = tableName;
         this.fieldName = fieldName;
         this.selections = selections;
         this.deletions = deletions;
         this.insertions = insertions;
         this.joins = joins;
+        this.updates = updates;
     }
 
     public static String formatKey(String tableName, String fieldName) {
@@ -46,7 +48,7 @@ public class Field {
     }
 
     public String outputResult() {
-        return this.toString() + " Selections: " + this.selections + " Deletions: " + this.deletions + " Insertions: " + this.insertions + " Joins: " + this.joins;
+        return this.toString() + " Selections: " + this.selections + " Deletions: " + this.deletions + " Insertions: " + this.insertions + " Joins: " + this.joins + " Updates: " + this.updates;
     }
 
 
@@ -70,6 +72,8 @@ public class Field {
                 this.joins++;
                 break;
             case UPDATE:
+                this.updates++;
+                break;
             case NULL:
                 break;
             default:
@@ -91,6 +95,10 @@ public class Field {
 
     public int getJoins() {
         return this.joins;
+    }
+
+    public int getUpdates() {
+        return this.updates;
     }
 
     public String getTableName() {

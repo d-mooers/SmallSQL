@@ -17,6 +17,7 @@ public class FieldTracker {
     private final int    DELETIONS_IDX = 3; 
     private final int    INSERTIONS_IDX = 4;
     private final int    JOINS_IDX = 5;
+    private final int    UPDATES_IDX = 6;
 
     public FieldTracker(SSConnection con, Database db) {
         this.con = con;
@@ -46,7 +47,8 @@ public class FieldTracker {
                 int deletions = from.getInt(DELETIONS_IDX);
                 int insertions = from.getInt(INSERTIONS_IDX);
                 int joins = from.getInt(JOINS_IDX);
-                Field field = new Field(tableName, fieldName, selections, deletions, insertions, joins);
+                int updates = from.getInt(UPDATES_IDX);
+                Field field = new Field(tableName, fieldName, selections, deletions, insertions, joins, updates);
                 this.fieldTracker.put(field.toString(), field);
                 from.deleteRow();
             }
@@ -67,13 +69,14 @@ public class FieldTracker {
         }
         Set<String> keys = this.fieldTracker.keySet();
         for (String key : keys) {
-            Expression[] updateValues = new ExpressionValue[JOINS_IDX + 1];
+            Expression[] updateValues = new ExpressionValue[UPDATES_IDX + 1];
             Field field = this.fieldTracker.get(key);
             updateValues[TABLE_NAME_IDX] = new ExpressionValue(field.getTableName(), SQLTokenizer.LONGNVARCHAR);
             updateValues[FIELD_NAME_IDX] = new ExpressionValue(field.getFieldName(), SQLTokenizer.LONGNVARCHAR);
             updateValues[INSERTIONS_IDX] = new ExpressionValue(field.getInsertions(), SQLTokenizer.INT);
             updateValues[DELETIONS_IDX] = new ExpressionValue(field.getDeletions(), SQLTokenizer.INT);
             updateValues[JOINS_IDX] = new ExpressionValue(field.getJoins(), SQLTokenizer.INT);
+            updateValues[UPDATES_IDX] = new ExpressionValue(field.getUpdates(), SQLTokenizer.INT);
             updateValues[SELECTIONS_IDX] = new ExpressionValue(field.getSelections(), SQLTokenizer.INT);
             try {
                 to.insertRow(updateValues);
@@ -146,6 +149,12 @@ public class FieldTracker {
             joins.setName("joins");
             joins.setDataType(SQLTokenizer.INT);
             columns.add(joins);
+
+            Column updates = new Column();
+            updates.setName("updates");
+            updates.setDataType(SQLTokenizer.INT);
+            columns.add(updates);
+
             try {
                 this.table = db.createTable(this.con, TABLE_NAME, columns, new IndexDescriptions(), new ForeignKeys());
             } catch (Exception error) {

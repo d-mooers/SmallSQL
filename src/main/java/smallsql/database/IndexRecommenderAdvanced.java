@@ -14,6 +14,7 @@ public class IndexRecommenderAdvanced extends IndexRecommender {
         weights.put(AccessType.JOIN, 5);
         weights.put(AccessType.DELETION, -2);
         weights.put(AccessType.INSERTION, -2);
+        weights.put(AccessType.UPDATE, -3);
     }
 
     public IndexRecommenderAdvanced(SSConnection con, ArrayList<Field> fields) {
@@ -40,7 +41,8 @@ public class IndexRecommenderAdvanced extends IndexRecommender {
             tuple[1] = field.getFieldName();
             if ((field.getJoins() * weights.get(AccessType.JOIN) +
                     field.getSelections() * weights.get(AccessType.SELECT)) + 
-                    tableUpdates.getOrDefault(table, 0) > 0
+                    tableUpdates.getOrDefault(table, 0) +
+                    field.getUpdates() * weights.get(AccessType.UPDATE) > 0
                     && !this.recommendedIndexes.contains(tuple)
                     && !this.containsIndex(field)) {
                 this.recommendedIndexes.add(tuple);

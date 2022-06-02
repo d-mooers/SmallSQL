@@ -17,6 +17,7 @@ public class IndexRecommenderBasic extends IndexRecommender {
         // tracks number of deletions and insertions per table
         HashMap<String, Integer> tableUpdates = new HashMap<>();
         for (Field field : this.fields) {
+            System.out.println(field.outputResult());
             if (field.getFieldName() == null) {
                 String table = field.getTableName();
                 int val = tableUpdates.getOrDefault(table, 0);
@@ -29,7 +30,8 @@ public class IndexRecommenderBasic extends IndexRecommender {
             String table = field.getTableName();
             tuple[0] = table;
             tuple[1] = field.getFieldName();
-            if ((field.getJoins() + field.getSelections()) - (tableUpdates.getOrDefault(table, 0)) > 0
+            if ((field.getJoins() + field.getSelections())
+                    - (tableUpdates.getOrDefault(table, 0) + field.getUpdates()) > 0
                     && !this.recommendedIndexes.contains(tuple)
                     && !this.containsIndex(field)) {
                 this.recommendedIndexes.add(tuple);
