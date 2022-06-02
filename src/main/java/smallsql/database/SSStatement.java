@@ -128,6 +128,7 @@ class SSStatement implements Statement {
 
     final public void close() {
         con.log.println("Statement.close");
+        con.getFieldTracker().save();
         isClosed = true;
         cmd = null;
         // TODO make Resources free;

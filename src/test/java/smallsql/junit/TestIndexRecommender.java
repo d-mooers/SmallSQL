@@ -25,15 +25,15 @@ public class TestIndexRecommender extends BasicTestCase {
 
     @AfterAll
     public void tearDown() throws SQLException {
+        stat.close();
+        con.close();
     }
 
     @BeforeAll
     public void setUp() throws SQLException {
         con = (SSConnection)basicTestFrame.getConnection();
         stat = con.createStatement();
-        try {
-            stat.execute("DROP TABLE " + TABLE_NAME);
-        } catch (SQLException e) {}
+        dropTable();
         createTable();
     }
 
@@ -42,6 +42,12 @@ public class TestIndexRecommender extends BasicTestCase {
 
         stat.execute("INSERT INTO " + TABLE_NAME + " VALUES (1, 2)");
         stat.execute("INSERT INTO " + TABLE_NAME + " VALUES (1, 3)");
+    }
+
+    private void dropTable() {
+        try {
+            stat.execute("DROP TABLE " + TABLE_NAME);
+        } catch (SQLException e) {}
     }
 
     @Test

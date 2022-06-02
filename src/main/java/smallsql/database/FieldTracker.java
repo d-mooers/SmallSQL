@@ -104,7 +104,8 @@ public class FieldTracker {
 
     public boolean loadOrCreateTable() {
         try {
-            TableView tv =  TableView.load(con, db, this.TABLE_NAME);
+            // TableView tv =  TableView.load(con, db, this.TABLE_NAME);
+            TableView tv = db.getTableView(con, this.TABLE_NAME);
             System.out.println("Table found");
             if (tv instanceof Table) this.table = (Table) tv;
             else {
@@ -172,5 +173,14 @@ public class FieldTracker {
 
     public void reset() {
         this.fieldTracker = new HashMap<>();
+    }
+    // drop all fields from a certain table
+    public void drop(String tableName) {
+        // avoid modifying list while iterating over it
+        for (Field field : new ArrayList<Field>(this.fieldTracker.values())) {
+            if (field.getTableName().equals(tableName)) {
+                this.fieldTracker.remove(field.formatKey());
+            }
+        }
     }
 }
