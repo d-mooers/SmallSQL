@@ -6,9 +6,9 @@ select
 	o_totalprice,
 	sum(l_quantity)
 from
-	customer,
-	orders,
-	lineitem
+	customer
+    JOIN orders on True
+	JOIN lineitem on True
 where
 	c_custkey = o_custkey
 	and o_orderkey = l_orderkey
@@ -21,46 +21,24 @@ group by
 order by
 	o_totalprice desc,
 	o_orderdate;
-SELECT
-     SUM(l_extendedprice* (1 - l_discount)) AS revenue
-FROM
-     lineitem,
-     part
-WHERE
-     (
-		p_partkey = l_partkey
-		AND p_brand = 'Brand#12'
-		AND l_quantity >= 1 AND l_quantity <= 1 + 10
-        AND p_size > 1 and p_size < 5
-		AND l_shipinstruct = 'DELIVER IN PERSON'
-     )
-     OR
-     (
-		p_partkey = l_partkey
-		AND p_brand = 'Brand#23'
-		AND l_quantity >= 10 AND l_quantity <= 10 + 10
-		AND l_shipinstruct = 'DELIVER IN PERSON'
-     )
-     OR
-     (
-		p_partkey = l_partkey
-		AND p_brand = 'Brand#34'
-		AND l_quantity >= 20 AND l_quantity <= 20 + 10
-		AND l_shipinstruct = 'DELIVER IN PERSON'
-     );
-SELECT
+    SELECT
  	s_name,
      s_address
 FROM
-     supplier,
-     nation
+     supplier
+     JOIN nation on True
 WHERE
      s_nationkey = n_nationkey
      AND n_name = 'CANADA'
 ORDER BY
      s_name;
 SELECT n_name, SUM(l_extendedprice * (1 - l_discount)) AS revenue
-  FROM customer, orders, lineitem, supplier, nation, region
+  FROM customer 
+    JOIN orders on True
+    JOIN lineitem on True
+    JOIN supplier on True
+    JOIN nation on True
+    JOIN region on True
  WHERE c_custkey = o_custkey
    AND l_orderkey = o_orderkey
    AND l_suppkey = s_suppkey
@@ -99,12 +77,12 @@ FROM
 			YEAR(l_shipdate) AS l_year,
 			l_extendedprice * (1 - l_discount) AS volume
 		FROM
-			supplier,
-			lineitem,
-			orders,
-			customer,
-			nation n1,
-			nation n2
+			supplier
+            JOIN lineitem on True
+			JOIN orders on True
+			JOIN customer on True
+			JOIN nation n1 on True
+			JOIN nation n2 on True
 		WHERE
 			s_suppkey = l_suppkey
 			AND o_orderkey = l_orderkey
@@ -130,7 +108,9 @@ SELECT
      SUM(l_extendedprice * (1 - l_discount)) AS revenue,
      o_orderdate,
      o_shippriority
- FROM  customer, orders, lineitem
+ FROM  customer
+    JOIN orders on True
+    JOIN lineitem on True
 WHERE c_mktsegment = 'BUILDING'
   AND c_custkey = o_custkey
   AND l_orderkey = o_orderkey
@@ -147,7 +127,11 @@ SELECT
      s_address,
      s_phone,
      s_comment
-FROM part, supplier, partsupp, nation, region
+FROM part 
+    JOIN supplier on True 
+    JOIN partsupp on True
+    JOIN nation on True 
+    JOIN region on True
 WHERE
      p_partkey = ps_partkey
      AND s_suppkey = ps_suppkey
@@ -189,12 +173,12 @@ FROM
 			YEAR(o_orderdate) AS o_year,
 			l_extendedprice * (1 - l_discount) - ps_supplycost * l_quantity AS amount
 		FROM
-			part,
-			supplier,
-			lineitem,
-			partsupp,
-			orders,
-			nation
+			part
+            JOIN supplier on True
+			JOIN lineitem on True
+			JOIN partsupp on True
+			JOIN orders on True
+			JOIN nation on True
 		WHERE
 			s_suppkey = l_suppkey
 			AND ps_suppkey = l_suppkey
@@ -223,14 +207,14 @@ FROM
 			l_extendedprice * (1 - l_discount) AS volume,
 			n2.n_name AS nation
 		FROM
-			part,
-			supplier,
-			lineitem,
-			orders,
-			customer,
-			nation n1,
-			nation n2,
-			region
+			part
+			JOIN supplier on True
+			JOIN lineitem on True
+			JOIN orders on True
+			JOIN customer on True
+			JOIN nation n1 on True
+			JOIN nation n2 on True
+			JOIN region on True
 		WHERE
 			p_partkey = l_partkey
 			AND s_suppkey = l_suppkey
@@ -251,9 +235,9 @@ SELECT
      ps_partkey,
      SUM(ps_supplycost * ps_availqty) AS value
 FROM
-     partsupp,
-     supplier,
-     nation
+     partsupp
+     JOIN supplier on True
+     JOIN nation on True
 WHERE
      ps_suppkey = s_suppkey
      AND s_nationkey = n_nationkey
@@ -270,10 +254,10 @@ SELECT
      c_phone,
      c_comment
 FROM
-     customer,
-     orders,
-     lineitem,
-     nation
+     customer
+     JOIN orders on True
+     JOIN lineitem on True
+     JOIN nation on True
 WHERE
      c_custkey = o_custkey
      AND l_orderkey = o_orderkey
@@ -292,8 +276,8 @@ GROUP BY
 SELECT
      l_shipmode
 FROM
-     orders,
-     lineitem
+    orders
+     JOIN lineitem on True
 WHERE
      o_orderkey = l_orderkey
      AND l_commitdate < l_receiptdate
@@ -307,8 +291,8 @@ ORDER BY
 SELECT
      SUM(l_extendedprice) / 7.0 AS avg_yearly
 FROM
-     lineitem,
-     part
+     lineitem
+     JOIN part on True
 WHERE
      p_partkey = l_partkey
      AND p_brand = 'Brand#23'
@@ -319,8 +303,8 @@ SELECT
      p_size,
      COUNT(ps_suppkey) AS supplier_cnt
 FROM
-     partsupp,
-     part
+     partsupp
+     JOIN part on True
 WHERE
      p_partkey = ps_partkey
 GROUP BY
@@ -331,4 +315,5 @@ ORDER BY
      p_brand,
      p_type,
      p_size;
+
 q

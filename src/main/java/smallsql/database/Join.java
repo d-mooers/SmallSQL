@@ -71,13 +71,20 @@ final class Join extends RowSource{
      **/
     public ArrayList<String[]> getColumns(){
         // Hashmap for alias to table name
+        if (condition == null) {
+            return new ArrayList<String[]>();
+        }
         HashMap<String, String> aliasMap = new HashMap<>();
         ArrayList<String[]> conditionFields = condition.getColumns(true);
         aliasMap.put(left.getAlias(), left.getName());
         aliasMap.put(right.getAlias(), right.getName());
+        
         for (int i = 0; i < conditionFields.size(); i++){
             String[] curElement = conditionFields.get(i);
-            curElement[0] = aliasMap.get(curElement[0]);
+            System.out.println("curElement[0]: " + curElement[0]);
+            if (aliasMap.containsKey(curElement[0])) {
+                curElement[0] = aliasMap.get(curElement[0]);
+            }
         }
         return conditionFields;
     }

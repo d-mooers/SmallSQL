@@ -272,10 +272,12 @@ class CommandSelect extends Command{
 	 * Get the columns before statements are compiled
      * or else the join just gets turned into a new table
 	 */
+	// FIND ME
 	public void preCompileGetColumns(){
 		if (from != null){
 			from.getColumns();
 			ArrayList<String[]> fromPairs = from.getColumns();
+			System.out.println("Booyah " +  AccessType.JOIN);
 			addFields(AccessType.JOIN, fromPairs);
 		}
 	}

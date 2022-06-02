@@ -92,6 +92,7 @@ class CommandUpdate extends CommandSelect {
 	 */
 	public void postCompileGetColumns(){
 		super.postCompileGetColumns();
+		System.out.println("CommandUpdate " + columnExpressions);
 		ArrayList<String[]> setPairs = columnExpressions.getColumns(false);
 		addFields(AccessType.UPDATE, setPairs);
 	}

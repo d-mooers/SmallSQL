@@ -106,15 +106,25 @@ class SSStatement implements Statement {
     final private void executeImpl(String sql) throws SQLException {
         checkStatement();
         generatedKeys = null;
+        System.out.println("SSStatement executeImpl");;
         try {
             con.log.println(sql);
+            System.out.println("1");
             SQLParser parser = new SQLParser();
+            System.out.println("2");
             cmd = parser.parse(con, sql);
+            System.out.println("3");
             cmd.preCompileGetColumns();
+            System.out.println("4");
             if (maxRows != 0 && (cmd.getMaxRows() == -1 || cmd.getMaxRows() > maxRows))
                 cmd.setMaxRows(maxRows);
+            System.out.println("5");
             cmd.execute(con, this);
+            System.out.println("6");
+            cmd.printFieldsUsed();
+            System.out.println("7");
             cmd.postCompileGetColumns();
+            System.out.println("8");
             cmd.finalizeColumns(con.getFieldTracker());
             //cmd.printFieldsUsed();
         } catch (Exception e) {

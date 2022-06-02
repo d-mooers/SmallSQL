@@ -177,7 +177,10 @@ abstract class Command {
      */
     public void printFieldsUsed(){
         for (TrackerRecord tr: fieldsUsed){
-             String sf = format("Operation: %d; Table: %s; Field: %s", tr.getAccessType(), tr.getTableName(), tr.getFieldName());
+            System.out.println(tr.getAccessType());
+            System.out.println(tr.getTableName());
+            System.out.println(tr.getFieldName());
+             String sf = format("Operation: %s; Table: %s; Field: %s", tr.getAccessType(), tr.getTableName(), tr.getFieldName());
              System.out.println(sf);
         }
     }
