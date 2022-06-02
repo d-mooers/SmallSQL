@@ -1,20 +1,14 @@
 package smallsql.junit;
 
 import smallsql.basicTestFrame;
-import smallsql.database.Field;
 import smallsql.database.FieldTracker;
-import smallsql.database.IndexRecommender;
-import smallsql.database.IndexRecommenderBasic;
 import smallsql.database.SSConnection;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.*;
-import java.util.ArrayList;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -30,7 +24,7 @@ public class TestFieldTracker extends BasicTestCase {
     public void tearDown() throws SQLException {
         FieldTracker tracker = con.getFieldTracker();
         tracker.reset();
-        con.close()
+        con.close();
     }
 
     @BeforeEach

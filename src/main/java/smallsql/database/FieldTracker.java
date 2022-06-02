@@ -58,7 +58,6 @@ public class FieldTracker {
     }
 
     private void saveToTable() {
-        System.out.println("Con: " + this.con);
         TableResult to = new TableResult(table);
         try {
             to.init(this.con);
@@ -109,7 +108,6 @@ public class FieldTracker {
         try {
             // TableView tv =  TableView.load(con, db, this.TABLE_NAME);
             TableView tv = db.getTableView(con, this.TABLE_NAME);
-            System.out.println("Table found");
             if (tv instanceof Table) this.table = (Table) tv;
             else {
                 throw new Error("Expected table, got view for field tracker");
@@ -166,7 +164,6 @@ public class FieldTracker {
     }
 
     public boolean save() {
-        System.out.println("Saving");
         this.saveToTable();
         return true;
     }
