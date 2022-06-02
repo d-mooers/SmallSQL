@@ -67,6 +67,14 @@ public class CommandDrop extends Command {
 				Database.dropView( con, catalog, name );
 				break;
             case SQLTokenizer.INDEX:
+                Database database = con.getDatabase(false);
+                IndexDescriptions indexes = ((Table)database.getTableView(con, catalog)).indexes;
+                for (int i = 0; i < indexes.size(); i ++) {
+                    if (indexes.get(i).getName().equals(name)){
+                        indexes.drop(database, i);
+                    }
+                }
+                break;
             case SQLTokenizer.PROCEDURE:
                 throw new java.lang.UnsupportedOperationException();
             default:

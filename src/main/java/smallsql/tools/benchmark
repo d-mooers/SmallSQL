@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Run the queries.
+time cat tpch_ddl.sql inserts.sql queries.sql indexes.sql | java -jar ../../../../../target/SmallSQL.jar

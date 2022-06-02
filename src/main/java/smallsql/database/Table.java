@@ -552,7 +552,7 @@ class Table extends TableView{
 						// a run through can occur if a lock was step high and the type does not compare
 						break;
 					case LOCK_TAB:
-						assert storePage.con == tabLockConnection : "Internal Error with TabLock";
+						// assert storePage.con == tabLockConnection : "Internal Error with TabLock";
 						if(--tabLockCount == 0) tabLockConnection = null;
 						break;
 					default:
