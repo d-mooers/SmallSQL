@@ -42,6 +42,7 @@ final class CommandTable extends Command{
 	final private IndexDescriptions indexes = new IndexDescriptions();
     final private ForeignKeys foreignKeys = new ForeignKeys();
     final private int tableCommandType;
+    private IndexDescription index;
     
 	
     CommandTable( Logger log, String catalog, String name, int tableCommandType ){
@@ -69,7 +70,10 @@ final class CommandTable extends Command{
 		indexes.add(indexDescription);
 	}
 	
-	
+	void setIndex(IndexDescription indexDescription) throws SQLException {
+        index = indexDescription;
+    }
+
     void addForeingnKey(ForeignKey key){
         foreignKeys.add(key);
     }
@@ -82,7 +86,8 @@ final class CommandTable extends Command{
         switch(tableCommandType){
         case SQLTokenizer.INDEX:
             Table tableView = (Table)database.getTableView( con, name);
-            indexes.create(con, database, tableView);
+            index.create(con, database, tableView);
+            tableView.indexes.add(index);
             break;
         case SQLTokenizer.CREATE:
             database.createTable( con, name, columns, indexes, foreignKeys );
