@@ -42,11 +42,6 @@ public class TestIndexRecommender extends BasicTestCase {
 
         stat.execute("INSERT INTO " + TABLE_NAME + " VALUES (1, 2)");
         stat.execute("INSERT INTO " + TABLE_NAME + " VALUES (1, 3)");
-
-        stat.execute("SELECT colA FROM " + TABLE_NAME + " WHERE colA = 1");
-        stat.execute("SELECT colA FROM " + TABLE_NAME + " WHERE colA = 1");
-        stat.execute("SELECT colA FROM " + TABLE_NAME + " WHERE colA = 1");
-        stat.execute("SELECT colB FROM " + TABLE_NAME + " WHERE colB = 1");
     }
 
     private void dropTable() {
