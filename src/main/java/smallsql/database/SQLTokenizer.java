@@ -466,7 +466,8 @@ public class SQLTokenizer {
     static final int REC_INDEX  = 269;
     static final int START      = 270;
     static final int STOP       = 271;
-    static final int MONITORING = 272;
+    static final int CLEAR      = 272;
+    static final int MONITORING = 273;
 	
 	static final String DESC_STR   = "DESC";
     static{
@@ -539,6 +540,10 @@ public class SQLTokenizer {
 		addKeyWord( "END",   		END);
 		addKeyWord( "SWITCH", 		SWITCH);
         addKeyWord( "REC_INDEX",   REC_INDEX);
+        addKeyWord("START",        START);
+        addKeyWord("STOP",         STOP);
+        addKeyWord("CLEAR",        CLEAR);
+        addKeyWord("MONITORING",   MONITORING);
     }
 
 

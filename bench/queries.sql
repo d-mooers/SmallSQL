@@ -1,3 +1,5 @@
+START MONITORING;
+
 select 
 	c_name,
 	c_custkey,
@@ -327,3 +329,8 @@ ORDER BY
      p_brand,
      p_type,
      p_size;
+
+
+STOP MONITORING;
+REC_INDEX BASIC;
+REC_INDEX ADVANCED;

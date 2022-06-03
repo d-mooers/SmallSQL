@@ -68,6 +68,7 @@ public class SSConnection implements Connection {
         boolean create = "true".equals(props.getProperty("create"));
         database = Database.getDatabase(name, this, create);
         metadata = new SSDatabaseMetaData(this);
+        monitoring = false;
         this.fieldTracker = new FieldTracker(this, database);
     }
 
@@ -81,6 +82,7 @@ public class SSConnection implements Connection {
         database = con.database;
         metadata = con.metadata;
         log = con.log;
+        monitoring = false;
         this.fieldTracker = new FieldTracker(con, con.database);
     }
 
@@ -91,6 +93,9 @@ public class SSConnection implements Connection {
 
     public void setMonitoring(boolean monitoring){
         this.monitoring = monitoring;
+    }
+    public boolean isMonitoring(){
+        return monitoring;
     }
 
     /**

@@ -14,6 +14,5 @@ public class CommandStartMonitoring extends Command{
     void executeImpl(SSConnection con, SSStatement st) throws Exception{
         con.getFieldTracker().reset();
         con.setMonitoring(true);
-        System.out.println("Start Monitoring");
     }
 }

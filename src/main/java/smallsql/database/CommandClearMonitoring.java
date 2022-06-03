@@ -1,8 +1,7 @@
 package smallsql.database;
 
-public class CommandStopMonitoring extends Command{
-
-    public CommandStopMonitoring(Logger log){
+public class CommandClearMonitoring extends Command{
+    public CommandClearMonitoring(Logger log){
         super(log);
     }
 
@@ -10,6 +9,6 @@ public class CommandStopMonitoring extends Command{
      * The main method to execute this Command and create a ResultSet.
      */
     void executeImpl(SSConnection con, SSStatement st) throws Exception{
-        con.setMonitoring(false);
+        con.getFieldTracker().reset();
     }
 }
