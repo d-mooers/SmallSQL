@@ -12,7 +12,6 @@ public class CommandStartMonitoring extends Command{
      * The main method to execute this Command and create a ResultSet.
      */
     void executeImpl(SSConnection con, SSStatement st) throws Exception{
-        con.getFieldTracker().reset();
         con.setMonitoring(true);
     }
 }
