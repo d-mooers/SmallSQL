@@ -2,7 +2,7 @@ package smallsql.database;
 
 import java.sql.*;
 
-/* Called via RECOMMEND INDEX; */
+/* Called via REC_INDEX; */
 public class CommandRecommendIndex extends Command {
 
     private IndexRecommender rec;

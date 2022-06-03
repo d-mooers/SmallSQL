@@ -24,10 +24,15 @@ public abstract class IndexRecommender {
     public abstract ArrayList<String[]> recommendIndex();
 
     protected Boolean containsIndex(Field field) {
+        // temp fix
+        if (field.getTableName().equals("UNION")) {
+            return false;
+        }
         Table table;
         try {
             table = (Table) con.getDatabase(true).getTableView(con, field.getTableName());
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new Error("Database not found.");
         }
         IndexDescriptions indexes = table.indexes;
