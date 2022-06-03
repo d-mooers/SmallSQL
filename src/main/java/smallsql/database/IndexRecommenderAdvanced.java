@@ -46,7 +46,7 @@ public class IndexRecommenderAdvanced extends IndexRecommender {
                 this.recommendedIndexes.add(tuple);
             }
         }
-        return this.recommendedIndexes;
+        return super.getRecommendedIndexes();
     }
 }
 

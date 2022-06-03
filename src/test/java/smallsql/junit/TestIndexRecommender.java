@@ -4,6 +4,7 @@ import smallsql.basicTestFrame;
 import smallsql.database.Field;
 import smallsql.database.IndexRecommender;
 import smallsql.database.IndexRecommenderBasic;
+import smallsql.database.IndexRecommenderRelativeFrequency;
 import smallsql.database.SSConnection;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -70,9 +71,24 @@ public class TestIndexRecommender extends BasicTestCase {
     }
 
     @Test
+    public void testRelativeFrequency() throws Exception {
+        ArrayList<Field> fields = new ArrayList<Field>(con.getFieldTracker().getFields());
+        IndexRecommender ir = new IndexRecommenderRelativeFrequency(con, fields);
+        ArrayList<String[]> recommendedIndexes = ir.recommendIndex();
+        
+        // Check that the only recommended index from this table is colA.
+        for (String[] index : recommendedIndexes) {
+            System.out.println(index[0] + " " + index[1]);
+            if (index[0].equals(TABLE_NAME)) {
+                assertEquals(index[1], "colA");;
+            }
+        }
+    }
+
+    @Test
     public void testDuplicateIndex() throws SQLException {
         // Create index on colA.
-        stat.execute("CREATE INDEX test_index ON " + TABLE_NAME+"(colA)");
+        stat.execute("CREATE INDEX test_index ON " + TABLE_NAME+" (colA)");
 
         ArrayList<Field> fields = new ArrayList<Field>(con.getFieldTracker().getFields());
         IndexRecommender ir = new IndexRecommenderBasic(con, fields);

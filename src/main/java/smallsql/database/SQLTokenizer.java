@@ -941,9 +941,11 @@ public class SQLTokenizer {
     //Rec Index Options
     static final int BASIC      = 1500;
     static final int ADVANCED   = 1501;
+    static final int REL_FREQ   = 1502;
     static{
         addKeyWord("BASIC",         BASIC);
         addKeyWord("ADVANCED",      ADVANCED);
+        addKeyWord("REL_FREQ",      REL_FREQ);
     }
 
 }
