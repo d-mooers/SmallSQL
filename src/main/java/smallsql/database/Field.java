@@ -26,7 +26,11 @@ public class Field {
 
     public static String formatKey(String tableName, String fieldName) {
         StringBuilder builder = new StringBuilder();
-        builder.append(tableName.toLowerCase());
+        if (tableName != null) {
+            builder.append(tableName.toLowerCase());
+        } else {
+            builder.append("null");
+        }
         builder.append('.');
         if (fieldName != null) {
             builder.append(fieldName.toLowerCase());

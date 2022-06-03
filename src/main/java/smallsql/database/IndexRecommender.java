@@ -54,6 +54,13 @@ public abstract class IndexRecommender {
     }
 
     public ArrayList<String[]> getRecommendedIndexes() {
+        this.recommendedIndexes.sort((f1, f2) -> {
+            double score_1 = Double.parseDouble(f1[2]);
+            double score_2 = Double.parseDouble(f2[2]);
+
+            if (score_1 > score_2) return -1;
+            return 1;
+        });
         return this.recommendedIndexes;
     }
 }

@@ -39,16 +39,16 @@ public class IndexRecommenderAdvanced extends IndexRecommender {
             String table = field.getTableName();
             tuple[0] = table;
             tuple[1] = field.getFieldName();
-            if ((field.getJoins() * weights.get(AccessType.JOIN) +
-                    field.getSelections() * weights.get(AccessType.SELECT)) + 
-                    tableUpdates.getOrDefault(table, 0) +
-                    field.getUpdates() * weights.get(AccessType.UPDATE) > 0
-                    && !this.recommendedIndexes.contains(tuple)
-                    && !this.containsIndex(field)) {
+            int score = field.getJoins() * weights.get(AccessType.JOIN)
+                + field.getSelections() * weights.get(AccessType.SELECT)
+                + tableUpdates.getOrDefault(table, 0)
+                + field.getUpdates() * weights.get(AccessType.UPDATE);
+            if (score > 0 && !this.recommendedIndexes.contains(tuple) && !this.containsIndex(field)) {
+                tuple[2] = Integer.toString(score);
                 this.recommendedIndexes.add(tuple);
             }
         }
-        return this.recommendedIndexes;
+        return super.getRecommendedIndexes();
     }
 }
 

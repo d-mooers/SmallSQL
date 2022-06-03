@@ -348,6 +348,8 @@ final class SQLParser {
             case SQLTokenizer.ADVANCED:
                 rec = new IndexRecommenderAdvanced(con, fields);
                 break;
+            case SQLTokenizer.REL_FREQ:
+                rec = new IndexRecommenderRelativeFrequency(con, fields);
         }
         return new CommandRecommendIndex(con.log, rec);
     }
