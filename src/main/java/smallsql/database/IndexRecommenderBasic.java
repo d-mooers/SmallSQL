@@ -25,13 +25,13 @@ public class IndexRecommenderBasic extends IndexRecommender {
             }
         }
         for (Field field : this.fields) {
-            String[] tuple = new String[2];
+            String[] tuple = new String[3];
             String table = field.getTableName();
             tuple[0] = table;
             tuple[1] = field.getFieldName();
-            if ((field.getJoins() + field.getSelections()) - (tableUpdates.getOrDefault(table, 0)) > 0
-                    && !this.recommendedIndexes.contains(tuple)
-                    && !this.containsIndex(field)) {
+            int score = field.getJoins() + field.getSelections() - tableUpdates.getOrDefault(table, 0);
+            if (score > 0 && !this.recommendedIndexes.contains(tuple) && !this.containsIndex(field)) {
+                tuple[2] = Integer.toString(score);
                 this.recommendedIndexes.add(tuple);
             }
         }

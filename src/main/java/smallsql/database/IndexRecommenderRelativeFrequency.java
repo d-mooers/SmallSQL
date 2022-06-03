@@ -49,7 +49,7 @@ public class IndexRecommenderRelativeFrequency extends IndexRecommender {
         }
         while(!pq.isEmpty()) {
             Field field = pq.poll();
-            this.recommendedIndexes.add(new String[]{field.getTableName(), field.getFieldName()});
+            this.recommendedIndexes.add(new String[]{field.getTableName(), field.getFieldName(), String.valueOf(calculateRelativeFrequency(field))});
         }
         return this.recommendedIndexes;
     }
