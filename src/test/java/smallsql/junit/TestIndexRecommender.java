@@ -6,7 +6,8 @@ import smallsql.database.IndexRecommender;
 import smallsql.database.IndexRecommenderBasic;
 import smallsql.database.SSConnection;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -54,9 +55,12 @@ public class TestIndexRecommender extends BasicTestCase {
         IndexRecommender ir = new IndexRecommenderBasic(con, fields);
         ArrayList<String[]> recommendedIndexes = ir.recommendIndex();
         
-        assertTrue(recommendedIndexes.size() == 1);
-        assertTrue(recommendedIndexes.get(0)[0].equals(TABLE_NAME));
-        assertTrue(recommendedIndexes.get(0)[1].equals("colA"));
+        // Check that the only recommended index from this table is colA.
+        for (String[] index : recommendedIndexes) {
+            if (index[0].equals(TABLE_NAME)) {
+                assertEquals(index[1], "colA");;
+            }
+        }
     }
 
     @Test
@@ -68,13 +72,21 @@ public class TestIndexRecommender extends BasicTestCase {
         IndexRecommender ir = new IndexRecommenderBasic(con, fields);
         ArrayList<String[]> recommendedIndexes = ir.recommendIndex();
 
-        assertTrue(recommendedIndexes.size() == 0);
+        // Check that there are no recommended indexes for this table.
+        for (String[] index : recommendedIndexes) {
+            assertFalse(index[0].equals(TABLE_NAME));
+        }
 
         stat.execute("DROP INDEX "+TABLE_NAME+".test_index");
 
         recommendedIndexes = ir.recommendIndex();
 
-        assertTrue(recommendedIndexes.size() == 1);
+        // Check that the only recommended index from this table is colA.
+        for (String[] index : recommendedIndexes) {
+            if (index[0].equals(TABLE_NAME)) {
+                assertEquals(index[1], "colA");;
+            }
+        }
     }
 }
 
