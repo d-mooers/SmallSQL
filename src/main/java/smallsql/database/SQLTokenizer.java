@@ -464,6 +464,9 @@ public class SQLTokenizer {
 	static final int END 		= 267;
 	static final int SWITCH 	= 268;
     static final int REC_INDEX  = 269;
+    static final int START      = 270;
+    static final int STOP       = 271;
+    static final int MONITORING = 272;
 	
 	static final String DESC_STR   = "DESC";
     static{

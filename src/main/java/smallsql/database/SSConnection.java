@@ -47,6 +47,7 @@ public class SSConnection implements Connection {
 
     private final boolean readonly;
     private FieldTracker fieldTracker;
+    private boolean monitoring;
     private Database database;
     private boolean autoCommit = true;
     int isolationLevel = TRANSACTION_READ_COMMITTED; // see also getDefaultTransactionIsolation
@@ -86,6 +87,10 @@ public class SSConnection implements Connection {
     
     public FieldTracker getFieldTracker() {
         return this.fieldTracker;
+    }
+
+    public void setMonitoring(boolean monitoring){
+        this.monitoring = monitoring;
     }
 
     /**
