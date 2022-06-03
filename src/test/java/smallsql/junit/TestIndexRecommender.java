@@ -43,6 +43,11 @@ public class TestIndexRecommender extends BasicTestCase {
 
         stat.execute("INSERT INTO " + TABLE_NAME + " VALUES (1, 2)");
         stat.execute("INSERT INTO " + TABLE_NAME + " VALUES (1, 3)");
+
+        stat.execute("SELECT colA FROM " + TABLE_NAME + " WHERE colA = 1");
+        stat.execute("SELECT colA FROM " + TABLE_NAME + " WHERE colA = 1");
+        stat.execute("SELECT colA FROM " + TABLE_NAME + " WHERE colA = 1");
+        stat.execute("SELECT colB FROM " + TABLE_NAME + " WHERE colB = 1");
     }
 
     private void dropTable() throws SQLException {
@@ -58,7 +63,8 @@ public class TestIndexRecommender extends BasicTestCase {
         // Check that the only recommended index from this table is colA.
         for (String[] index : recommendedIndexes) {
             if (index[0].equals(TABLE_NAME)) {
-                assertEquals(index[1], "colA");;
+                assertEquals(index[1], "colA");
+                assertEquals(index[2], "1");
             }
         }
     }
