@@ -90,7 +90,14 @@ final class SQLParser {
             		return truncate();
             case SQLTokenizer.REC_INDEX:
                     return recIndex();
-            default:
+			case SQLTokenizer.START:
+					return startMonitoring();
+			case SQLTokenizer.STOP:
+				return stopMonitoring();
+			case SQLTokenizer.CLEAR:
+			    return clearMonitoring();
+
+			default:
                     throw new Error();
         }
     }
@@ -336,8 +343,23 @@ final class SQLParser {
         }
         throw createSyntaxError( token, validValues);
     }
-    
-    private CommandRecommendIndex recIndex() throws SQLException {
+
+    private CommandStartMonitoring startMonitoring() throws SQLException {
+		SQLToken token = nextToken(MONITORING);
+		return new CommandStartMonitoring(con.log);
+	}
+
+	private CommandStopMonitoring stopMonitoring() throws SQLException {
+		SQLToken token = nextToken(MONITORING);
+		return new CommandStopMonitoring(con.log);
+	}
+
+	private CommandClearMonitoring clearMonitoring() throws SQLException {
+		SQLToken token = nextToken(MONITORING);
+		return new CommandClearMonitoring(con.log);
+	}
+
+	private CommandRecommendIndex recIndex() throws SQLException {
         ArrayList<Field> fields = con.getFieldTracker().getFields();
         IndexRecommender rec = null;
         SQLToken token = nextToken(REC_INDEX);
@@ -1977,7 +1999,7 @@ Switch: while(true)
     }
 
 
-    private static final int[] COMMANDS = {SQLTokenizer.SELECT, SQLTokenizer.DELETE, SQLTokenizer.INSERT, SQLTokenizer.UPDATE, SQLTokenizer.CREATE, SQLTokenizer.DROP, SQLTokenizer.ALTER, SQLTokenizer.SET, SQLTokenizer.USE, SQLTokenizer.EXECUTE, SQLTokenizer.TRUNCATE, SQLTokenizer.REC_INDEX};
+    private static final int[] COMMANDS = {SQLTokenizer.SELECT, SQLTokenizer.DELETE, SQLTokenizer.INSERT, SQLTokenizer.UPDATE, SQLTokenizer.CREATE, SQLTokenizer.DROP, SQLTokenizer.ALTER, SQLTokenizer.SET, SQLTokenizer.USE, SQLTokenizer.EXECUTE, SQLTokenizer.TRUNCATE, SQLTokenizer.REC_INDEX, SQLTokenizer.START, SQLTokenizer.STOP, SQLTokenizer.CLEAR};
     private static final int[] COMMANDS_ESCAPE = {SQLTokenizer.D, SQLTokenizer.T, SQLTokenizer.TS, SQLTokenizer.FN, SQLTokenizer.CALL};
     private static final int[] COMMANDS_ALTER = {SQLTokenizer.DATABASE, SQLTokenizer.TABLE, SQLTokenizer.VIEW,  SQLTokenizer.PROCEDURE, };
     private static final int[] COMMANDS_CREATE = {SQLTokenizer.DATABASE, SQLTokenizer.TABLE, SQLTokenizer.VIEW, SQLTokenizer.INDEX, SQLTokenizer.PROCEDURE, SQLTokenizer.UNIQUE, SQLTokenizer.CLUSTERED, SQLTokenizer.NONCLUSTERED};
@@ -2029,6 +2051,7 @@ Switch: while(true)
 	private static final int[] MISSING_WHEN_ELSE_END = {SQLTokenizer.WHEN, SQLTokenizer.ELSE, SQLTokenizer.END};
 	private static final int[] MISSING_ADD_ALTER_DROP = {SQLTokenizer.ADD, SQLTokenizer.ALTER, SQLTokenizer.DROP};
     private static final int[] REC_INDEX = {SQLTokenizer.BASIC, SQLTokenizer.ADVANCED};
+    private static final int[] MONITORING = {SQLTokenizer.MONITORING};
 	
 	
 }

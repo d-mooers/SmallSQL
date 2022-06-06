@@ -97,7 +97,7 @@ class SSStatement implements Statement {
 
 
     final public boolean execute(String sql) throws SQLException {
-        //System.out.println(sql);
+        System.out.println(sql);
         executeImpl(sql);
         return cmd.getResultSet() != null;
     }
@@ -115,7 +115,8 @@ class SSStatement implements Statement {
                 cmd.setMaxRows(maxRows);
             cmd.execute(con, this);
             cmd.postCompileGetColumns();
-            cmd.finalizeColumns(con.getFieldTracker());
+            if (con.isMonitoring())
+                cmd.finalizeColumns(con.getFieldTracker());
             //cmd.printFieldsUsed();
         } catch (Exception e) {
             throw SmallSQLException.createFromException(e);
