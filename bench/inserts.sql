@@ -162,6 +162,3 @@ INSERT INTO orders (o_orderkey, o_custkey, o_orderstatus, o_totalprice, o_orderd
 INSERT INTO orders (o_orderkey, o_custkey, o_orderstatus, o_totalprice, o_orderdate, o_orderpriority, o_clerk, o_shippriority, o_comment) VALUES (4928, 22, 'F', 92223.13, '1993-10-04', '4-NOT SPECIFIED', 'Clerk#000000952', 0, 'slyly brave instructions after the ironic excuses haggle ruthlessly about');
 INSERT INTO lineitem (l_orderkey, l_partkey, l_suppkey, l_linenumber, l_quantity, l_extendedprice, l_discount, l_tax, l_returnflag, l_linestatus, l_shipdate, l_commitdate, l_receiptdate, l_shipinstruct, l_shipmode, l_comment) VALUES (2374, 4, 5, 5, 25, 22600.00, 0.08, 0.00, 'A', 'F', '1993-11-26', '1993-12-15', '1993-12-10', 'COLLECT COD', 'RAIL', 'refully pending d');
 INSERT INTO lineitem (l_orderkey, l_partkey, l_suppkey, l_linenumber, l_quantity, l_extendedprice, l_discount, l_tax, l_returnflag, l_linestatus, l_shipdate, l_commitdate, l_receiptdate, l_shipinstruct, l_shipmode, l_comment) VALUES (4355, 8, 9, 3, 13, 11804.00, 0.07, 0.05, 'N', 'O', '1997-01-21', '1996-12-22', '1997-02-14', 'COLLECT COD', 'TRUCK', ' ought to mold. blithely pending ideas ');
-
-CLEAR MONITORING;
-

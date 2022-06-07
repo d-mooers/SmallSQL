@@ -113,4 +113,3 @@ CREATE TABLE lineitem (
     FOREIGN KEY (l_orderkey) REFERENCES orders (o_orderkey),
     FOREIGN KEY (l_partkey, l_suppkey) REFERENCES partsupp (ps_partkey, ps_suppkey)
 );
-

@@ -15,7 +15,7 @@ import java.util.Scanner;
 public class cli {
 
     public static void main(String... args) throws Exception {
-        System.err.println(String.format("SmallSQL Database CLI <v%d.%d>%n", config.VERSION_NUMBER_MAJOR, config.VERSION_NUMBER_MINOR));
+        System.out.println(String.format("SmallSQL Database CLI <v%d.%d>%n", config.VERSION_NUMBER_MAJOR, config.VERSION_NUMBER_MINOR));
 
         Connection con = new SSDriver().connect("jdbc:smallsql:db1?create=true", new Properties());
         Statement st = con.createStatement();
@@ -30,6 +30,10 @@ public class cli {
                 System.out.print("\nCommand (<q> to exit): ");
             }
             String currentLine = sc.nextLine();
+            while (currentLine.startsWith("-- ")) {
+                // skip comments
+                currentLine = sc.nextLine();
+            }
             System.out.println(currentLine);
             currentLine = currentLine == null ? "" : currentLine.trim();
             commandBuilder.append(currentLine).append('\n');
@@ -45,6 +49,7 @@ public class cli {
                     }
                 } catch (SQLException e) {
                     System.err.println(e.getLocalizedMessage());
+                    e.printStackTrace();
                 } finally {
                     commandBuilder.setLength(0);
                 }
@@ -55,7 +60,7 @@ public class cli {
             }
         }
         st.close();
-        System.err.println("Bye!");
+        System.out.println("Bye!");
     }
 
     private static void printHelp(Connection con) throws SQLException {

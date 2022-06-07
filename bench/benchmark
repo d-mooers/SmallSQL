@@ -1,5 +1,43 @@
 #!/bin/bash
 
 
-# Run the queries.
-time cat tpch_ddl.sql inserts.sql queries.sql updates.sql cleanup.sql | java -jar ../target/SmallSQL.jar
+run_sql() {
+    cat $* quit.sql | java -jar ../target/SmallSQL.jar
+}
+
+reset_db() {
+    rm db1/*.idx # temp fix bc indexes don't load properly after closing db
+    run_sql tpch_ddl.sql inserts.sql
+}
+
+time_sql() {
+    time run_sql $* queries.sql updates.sql
+}
+
+time_index() {
+    reset_db
+    run_sql $*
+    time_sql
+}
+
+
+run_sql clear.sql
+reset_db
+
+# time without indexes
+run_sql start.sql
+>&2 echo Time without indexes:
+time_sql start.sql
+run_sql stop.sql
+
+# time basic indexes
+>&2 echo Time with basic indexes:
+time_index basic.sql
+
+# time advanced indexes
+>&2 echo Time with advanced indexes:
+time_index advanced.sql
+
+# time relative frequency indexes
+>&2 echo Time with relative frequency indexes:
+time_index rel_freq.sql
