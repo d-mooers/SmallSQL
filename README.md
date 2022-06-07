@@ -4,6 +4,8 @@ SmallSQL Database is a free DBMS library for the Java(tm) platform.
 
 ## CSC 468 Project
 
+Click here[https://docs.google.com/document/d/1frQzxD2b9HiHJP6PmxQ8DpTScWtUsi-cLmuMzNEG0Po/edit?usp=sharing] to read about this project!
+
 ### SQL Commands
 
 - START MONITORING
