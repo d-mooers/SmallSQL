@@ -2,6 +2,21 @@
 
 SmallSQL Database is a free DBMS library for the Java(tm) platform.
 
+## CSC 368 Project 
+
+### SQL Commands
+* START MONITORING
+	* Start tracking queries to be used in index recommendation
+* STOP MONITORING
+	* Stop tracking queries to be used in index recommendation
+* CLEAR MONITORING
+	* Clear the data stored from monitored queries to be used in index recommendation
+* REC_INDEX *type*
+	* BASIC: recommend indexes based on read-to-write ratio
+	* ADVANCED: recommend indexes based on weighted read-to-write ratio
+* CREATE INDEX *index_name* ON *table_name (column_name)*
+* DROP INDEX *table_name.index_name*
+
 ## Original author info
 
 It runs on the Java 2 Platform (JDK 1.4 or later) and implements the JDBC 3.0 API.
