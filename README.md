@@ -42,6 +42,12 @@ SmallSQL Database is a free DBMS library for the Java(tm) platform.
 java -jar target/SmallSQL.jar
 ```
 
+### Benchmark
+
+```bash
+cd bench && ./benchmark
+```
+
 ## Original author info
 
 It runs on the Java 2 Platform (JDK 1.4 or later) and implements the JDBC 3.0 API.
