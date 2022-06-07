@@ -35,7 +35,6 @@ public class IndexRecommenderAdvanced extends IndexRecommender {
             }
         }
         for (Field field : this.fields) {
-            // System.out.println(field.outputResult());
             String[] tuple = new String[3];
             String table = field.getTableName();
             tuple[0] = table;

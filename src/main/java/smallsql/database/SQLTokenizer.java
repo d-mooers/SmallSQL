@@ -468,6 +468,7 @@ public class SQLTokenizer {
     static final int STOP       = 271;
     static final int CLEAR      = 272;
     static final int MONITORING = 273;
+    static final int CREATE_INDEX = 274;
 	
 	static final String DESC_STR   = "DESC";
     static{
@@ -544,6 +545,7 @@ public class SQLTokenizer {
         addKeyWord("STOP",         STOP);
         addKeyWord("CLEAR",        CLEAR);
         addKeyWord("MONITORING",   MONITORING);
+        addKeyWord("CREATE_INDEX", CREATE_INDEX);
     }
 
 

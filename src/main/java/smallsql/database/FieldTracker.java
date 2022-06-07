@@ -94,6 +94,8 @@ public class FieldTracker {
     }
 
     public void incrementCounter(AccessType accessType, String tableName, String fieldName) {
+        // TODO: where is this coming from?
+        if (fieldName != null && fieldName.equals("DESC")) return; 
         Field field;
         if (!this.fieldTracker.containsKey(Field.formatKey(tableName, fieldName))) {
             field = new Field(tableName, fieldName);

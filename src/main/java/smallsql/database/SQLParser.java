@@ -89,7 +89,9 @@ final class SQLParser {
             case SQLTokenizer.TRUNCATE:
             		return truncate();
             case SQLTokenizer.REC_INDEX:
-                    return recIndex();
+                    return (CommandRecommendIndex) recIndex(false);
+            case SQLTokenizer.CREATE_INDEX:
+                    return (CommandCreateIndex) recIndex(true);
 			case SQLTokenizer.START:
 					return startMonitoring();
 			case SQLTokenizer.STOP:
@@ -359,7 +361,7 @@ final class SQLParser {
 		return new CommandClearMonitoring(con.log);
 	}
 
-	private CommandRecommendIndex recIndex() throws SQLException {
+	private Command recIndex(boolean create) throws SQLException {
         ArrayList<Field> fields = con.getFieldTracker().getFields();
         IndexRecommender rec = null;
         SQLToken token = nextToken(REC_INDEX);
@@ -374,7 +376,12 @@ final class SQLParser {
                 rec = new IndexRecommenderRelativeFrequency(con, fields);
                 break;
         }
-        return new CommandRecommendIndex(con.log, rec);
+        if (create) {
+            // TODO: add max argument
+            return new CommandCreateIndex(con.log, rec, 5);
+        } else {
+            return new CommandRecommendIndex(con.log, rec);
+        }
     }
 
     /**
@@ -2000,7 +2007,7 @@ Switch: while(true)
     }
 
 
-    private static final int[] COMMANDS = {SQLTokenizer.SELECT, SQLTokenizer.DELETE, SQLTokenizer.INSERT, SQLTokenizer.UPDATE, SQLTokenizer.CREATE, SQLTokenizer.DROP, SQLTokenizer.ALTER, SQLTokenizer.SET, SQLTokenizer.USE, SQLTokenizer.EXECUTE, SQLTokenizer.TRUNCATE, SQLTokenizer.REC_INDEX, SQLTokenizer.START, SQLTokenizer.STOP, SQLTokenizer.CLEAR};
+    private static final int[] COMMANDS = {SQLTokenizer.SELECT, SQLTokenizer.DELETE, SQLTokenizer.INSERT, SQLTokenizer.UPDATE, SQLTokenizer.CREATE, SQLTokenizer.DROP, SQLTokenizer.ALTER, SQLTokenizer.SET, SQLTokenizer.USE, SQLTokenizer.EXECUTE, SQLTokenizer.TRUNCATE, SQLTokenizer.REC_INDEX, SQLTokenizer.START, SQLTokenizer.STOP, SQLTokenizer.CLEAR, SQLTokenizer.CREATE_INDEX};
     private static final int[] COMMANDS_ESCAPE = {SQLTokenizer.D, SQLTokenizer.T, SQLTokenizer.TS, SQLTokenizer.FN, SQLTokenizer.CALL};
     private static final int[] COMMANDS_ALTER = {SQLTokenizer.DATABASE, SQLTokenizer.TABLE, SQLTokenizer.VIEW,  SQLTokenizer.PROCEDURE, };
     private static final int[] COMMANDS_CREATE = {SQLTokenizer.DATABASE, SQLTokenizer.TABLE, SQLTokenizer.VIEW, SQLTokenizer.INDEX, SQLTokenizer.PROCEDURE, SQLTokenizer.UNIQUE, SQLTokenizer.CLUSTERED, SQLTokenizer.NONCLUSTERED};

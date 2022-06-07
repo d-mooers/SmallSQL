@@ -45,7 +45,14 @@ public class IndexRecommenderRelativeFrequency extends IndexRecommender {
             totalJoins += field.getJoins();
         }
         for (Field field : this.fields) {
-            if (calculateRelativeFrequency(field) > 0) this.recommendedIndexes.add(new String[]{field.getTableName(), field.getFieldName(), String.valueOf(calculateRelativeFrequency(field))});
+            String[] tuple = new String[3];
+            tuple[0] = field.getTableName();
+            tuple[1] = field.getFieldName();
+            double score = calculateRelativeFrequency(field);
+            tuple[2] = String.valueOf(score);
+            if (calculateRelativeFrequency(field) > 0 && !this.recommendedIndexes.contains(tuple) && !this.containsIndex(field)) {
+                this.recommendedIndexes.add(tuple);
+            }
         }
         return super.getRecommendedIndexes();
     }
