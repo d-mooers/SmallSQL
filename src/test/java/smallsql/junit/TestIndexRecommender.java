@@ -2,6 +2,7 @@ package smallsql.junit;
 
 import smallsql.basicTestFrame;
 import smallsql.database.Field;
+import smallsql.database.FieldTracker;
 import smallsql.database.IndexRecommender;
 import smallsql.database.IndexRecommenderBasic;
 import smallsql.database.IndexRecommenderRelativeFrequency;
@@ -28,6 +29,9 @@ public class TestIndexRecommender extends BasicTestCase {
     @AfterEach
     public void tearDown() throws SQLException {
         dropTable();
+        FieldTracker tracker = con.getFieldTracker();
+        tracker.reset();
+        stat.execute("STOP MONITORING");
         stat.close();
         con.close();
     }
@@ -36,6 +40,7 @@ public class TestIndexRecommender extends BasicTestCase {
     public void setUp() throws SQLException {
         con = (SSConnection)basicTestFrame.getConnection();
         stat = con.createStatement();
+        stat.execute("START MONITORING");
         createTable();
     }
 

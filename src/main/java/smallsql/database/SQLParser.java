@@ -372,6 +372,7 @@ final class SQLParser {
                 break;
             case SQLTokenizer.REL_FREQ:
                 rec = new IndexRecommenderRelativeFrequency(con, fields);
+                break;
         }
         return new CommandRecommendIndex(con.log, rec);
     }
@@ -2050,7 +2051,7 @@ Switch: while(true)
 	private static final int[] MISSING_THEN = {SQLTokenizer.THEN};
 	private static final int[] MISSING_WHEN_ELSE_END = {SQLTokenizer.WHEN, SQLTokenizer.ELSE, SQLTokenizer.END};
 	private static final int[] MISSING_ADD_ALTER_DROP = {SQLTokenizer.ADD, SQLTokenizer.ALTER, SQLTokenizer.DROP};
-    private static final int[] REC_INDEX = {SQLTokenizer.BASIC, SQLTokenizer.ADVANCED};
+    private static final int[] REC_INDEX = {SQLTokenizer.BASIC, SQLTokenizer.ADVANCED, SQLTokenizer.REL_FREQ};
     private static final int[] MONITORING = {SQLTokenizer.MONITORING};
 	
 	

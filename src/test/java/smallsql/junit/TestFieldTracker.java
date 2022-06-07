@@ -24,6 +24,7 @@ public class TestFieldTracker extends BasicTestCase {
     public void tearDown() throws SQLException {
         FieldTracker tracker = con.getFieldTracker();
         tracker.reset();
+        stat.execute("STOP MONITORING");
         con.close();
     }
 
@@ -34,6 +35,7 @@ public class TestFieldTracker extends BasicTestCase {
         try {
             stat.execute("DROP TABLE " + TABLE_NAME);
         } catch (SQLException e) {}
+        stat.execute("START MONITORING");
         createTable();
     }
     

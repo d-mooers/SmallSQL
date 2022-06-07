@@ -30,6 +30,7 @@ public class cli {
                 System.out.print("\nCommand (<q> to exit): ");
             }
             String currentLine = sc.nextLine();
+            System.out.println(currentLine);
             currentLine = currentLine == null ? "" : currentLine.trim();
             commandBuilder.append(currentLine).append('\n');
 

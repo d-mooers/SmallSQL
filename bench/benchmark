@@ -1,0 +1,5 @@
+#!/bin/bash
+
+
+# Run the queries.
+time cat tpch_ddl.sql inserts.sql queries.sql updates.sql cleanup.sql | java -jar ../target/SmallSQL.jar
