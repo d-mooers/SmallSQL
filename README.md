@@ -45,7 +45,7 @@ java -jar target/SmallSQL.jar
 ### Benchmark
 
 ```bash
-cd bench && ./benchmark
+cd bench && ./benchmark > log.txt
 ```
 
 ## Original author info
