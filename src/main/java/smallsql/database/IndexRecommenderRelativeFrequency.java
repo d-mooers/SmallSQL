@@ -35,7 +35,15 @@ public class IndexRecommenderRelativeFrequency extends IndexRecommender {
     }
 
     private double calculateRelativeFrequency(Field f) {
-        return (f.getSelections() / (double) this.totalSelections) + (f.getJoins() / (double) this.totalJoins);
+        double selectionScore = 0;
+        double joinScore = 0;
+        if (this.totalSelections != 0) {
+            selectionScore = f.getSelections() / (double) this.totalSelections;
+        }
+        if (this.totalJoins != 0) {
+            joinScore = f.getJoins() / (double) this.totalJoins;
+        }
+        return selectionScore + joinScore;
     }
 
     public ArrayList<String[]> recommendIndex() {
