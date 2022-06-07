@@ -9,12 +9,14 @@ import smallsql.database.IndexRecommenderRelativeFrequency;
 import smallsql.database.SSConnection;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.*;
 import java.util.ArrayList;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -26,24 +28,22 @@ public class TestIndexRecommender extends BasicTestCase {
     private static SSConnection con;
     private static Statement stat;
 
-    @AfterEach
-    public void tearDown() throws SQLException {
-        dropTable();
+    @BeforeAll
+    public void initialSetUp() throws SQLException {
+        con = (SSConnection)basicTestFrame.getConnection();
+        stat = con.createStatement();
         FieldTracker tracker = con.getFieldTracker();
         tracker.reset();
-        stat.execute("STOP MONITORING");
+        stat.execute("START MONITORING");
+    }
+
+    @AfterAll
+    public void finalTearDown() throws SQLException {
         stat.close();
         con.close();
     }
 
     @BeforeEach
-    public void setUp() throws SQLException {
-        con = (SSConnection)basicTestFrame.getConnection();
-        stat = con.createStatement();
-        stat.execute("START MONITORING");
-        createTable();
-    }
-
     private void createTable() throws SQLException {
         stat.execute("CREATE TABLE " + TABLE_NAME +" (colA INT, colB INT)");
 
@@ -56,6 +56,7 @@ public class TestIndexRecommender extends BasicTestCase {
         stat.execute("SELECT colB FROM " + TABLE_NAME + " WHERE colB = 1");
     }
 
+    @AfterEach
     private void dropTable() throws SQLException {
         stat.execute("DROP TABLE " + TABLE_NAME);
     }
@@ -66,13 +67,9 @@ public class TestIndexRecommender extends BasicTestCase {
         IndexRecommender ir = new IndexRecommenderBasic(con, fields);
         ArrayList<String[]> recommendedIndexes = ir.recommendIndex();
         
-        // Check that the only recommended index from this table is colA.
-        for (String[] index : recommendedIndexes) {
-            if (index[0].equals(TABLE_NAME)) {
-                assertEquals(index[1], "colA");
-                assertEquals(index[2], "1");
-            }
-        }
+        assertEquals(recommendedIndexes.get(0)[1], "colA");
+        assertEquals(recommendedIndexes.get(0)[2], "1");
+
     }
 
     @Test
@@ -81,13 +78,10 @@ public class TestIndexRecommender extends BasicTestCase {
         IndexRecommender ir = new IndexRecommenderRelativeFrequency(con, fields);
         ArrayList<String[]> recommendedIndexes = ir.recommendIndex();
         
-        // Check that the only recommended index from this table is colA.
-        for (String[] index : recommendedIndexes) {
-            System.out.println(index[0] + " " + index[1]);
-            if (index[0].equals(TABLE_NAME)) {
-                assertEquals(index[1], "colA");;
-            }
-        }
+        assertEquals(recommendedIndexes.get(0)[1], "colA");
+        assertEquals(recommendedIndexes.get(0)[2], "0.75");
+        assertEquals(recommendedIndexes.get(1)[1], "colB");
+        assertEquals(recommendedIndexes.get(1)[2], "0.25");
     }
 
     @Test
@@ -99,21 +93,13 @@ public class TestIndexRecommender extends BasicTestCase {
         IndexRecommender ir = new IndexRecommenderBasic(con, fields);
         ArrayList<String[]> recommendedIndexes = ir.recommendIndex();
 
-        // Check that there are no recommended indexes for this table.
-        for (String[] index : recommendedIndexes) {
-            assertFalse(index[0].equals(TABLE_NAME));
-        }
+        assertTrue(recommendedIndexes.size() == 0);
 
         stat.execute("DROP INDEX "+TABLE_NAME+".test_index");
 
         recommendedIndexes = ir.recommendIndex();
 
-        // Check that the only recommended index from this table is colA.
-        for (String[] index : recommendedIndexes) {
-            if (index[0].equals(TABLE_NAME)) {
-                assertEquals(index[1], "colA");;
-            }
-        }
+        assertTrue(recommendedIndexes.size() == 1);
     }
 }
 
