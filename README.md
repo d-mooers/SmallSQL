@@ -14,6 +14,10 @@ SmallSQL Database is a free DBMS library for the Java(tm) platform.
 * REC_INDEX *type*
 	* BASIC: recommend indexes based on read-to-write ratio
 	* ADVANCED: recommend indexes based on weighted read-to-write ratio
+	* REL_FREQ: recommend indexes based on the relative frequency of reads to that field compared to other fields
+* CREATE_INDEX *type*
+	* Same options as REC_INDEX
+	* Creates the indexes that are recommended
 * CREATE INDEX *index_name* ON *table_name (column_name)*
 * DROP INDEX *table_name.index_name*
 
